@@ -29,7 +29,6 @@ public class UserForm extends HorizontalLayout {
 			.withValidator(new StringLengthValidator("4-10 characters please",4,10))
 			.bind(User::getPassword, User::setPassword);
 		binder.forField(adminField)
-			.asRequired()
 			.bind(User::isAdmin, User::setAdmin);
 		
 		binder.setBean(user);

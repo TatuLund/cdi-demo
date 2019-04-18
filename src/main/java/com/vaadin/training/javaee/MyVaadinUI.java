@@ -98,7 +98,7 @@ public class MyVaadinUI extends UI {
 		adminButton = new Button("admin", event -> { 
 			nav.navigateTo(AdminView.VIEW);
 		});
-		adminButton.setEnabled(false);
+		adminButton.setEnabled(userService.getUser() != null && userService.getUser().isAdmin());
 		Button logoutButton = new Button("logout", event -> { 
 			userService.logout();
 			getPage().setLocation("");
