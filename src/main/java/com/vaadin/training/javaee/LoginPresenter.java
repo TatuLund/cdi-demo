@@ -14,7 +14,7 @@ public class LoginPresenter {
 	private Logger logger;
 	
 	@Inject
-	private UserService user;
+	private UserService userService;
 	
 	private LoginView view;
 
@@ -27,12 +27,10 @@ public class LoginPresenter {
 
 	public void login(String username, String password) {
 		// Delegate login processing to Session scoped user service
-		if (user.passesLogin(username, password)) {
+		if (userService.passesLogin(username, password)) {
 			event.fire(new LoginEvent(username));
-			logger.info("User: "+username+" logged in");
 		} else {
 			view.showError("Login failed");
-			logger.warn("User: "+username+" login failure");
 		}
 	}
 

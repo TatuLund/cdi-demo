@@ -14,7 +14,7 @@ public class MainPresenter {
 	private Logger logger;
 	
 	@Inject
-	private UserService user;
+	private UserService userService;
 
 	@Inject
 	private Event<NotLoggedInEvent> event;
@@ -33,7 +33,7 @@ public class MainPresenter {
 	}
 	
 	public void handleLoggedIn() {
-		if (!user.isLoggedIn()) {
+		if (userService.getUser() == null) {
 			logger.warn("User is not logged in");
 			event.fire(new NotLoggedInEvent());
 		}

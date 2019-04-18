@@ -17,9 +17,11 @@ import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.themes.ValoTheme;
 
 @Theme("valo")
 @SuppressWarnings("serial")
@@ -31,7 +33,7 @@ public class MyVaadinUI extends UI {
 	private Logger logger;
 	
 	@Inject
-	private UserService user; 
+	private UserService userService; 
 
 	@Inject
 	private CDINavigator nav;
@@ -43,6 +45,8 @@ public class MyVaadinUI extends UI {
 	private HorizontalLayout actions;
 	private VerticalLayout rootLayout;
 
+	private Button adminButton;
+	
 	@Override
 	protected void init(VaadinRequest request) {
 		logger.info("UI Init: "+VaadinServlet.getCurrent().getServletContext().getContextPath());
@@ -66,6 +70,7 @@ public class MyVaadinUI extends UI {
 	
 	private void navigateToMain(@Observes LoginEvent event) {
 		Notification.show("Login succesful! Welcome "+event.getUser());
+		adminButton.setEnabled(userService.isAdmin());
 		logger.info("Rerouting to main view");
 		nav.navigateTo(MainView.VIEW);
 	}
@@ -73,7 +78,7 @@ public class MyVaadinUI extends UI {
 	private void navigateToLogin(@Observes NotLoggedInEvent event) {
 		Notification.show("Please login first");
 		logger.info("Rerouting to login page");
-		getNavigator().navigateTo(LoginView.VIEW);
+		nav.navigateTo(LoginView.VIEW);
 	}
 
 	private void createRootLayout() {
@@ -85,11 +90,22 @@ public class MyVaadinUI extends UI {
 	private void createActions() {
 		actions = new HorizontalLayout();
 		actions.setWidth("100%");
+		Button label = new Button("CDI Demo");
+		label.addStyleName(ValoTheme.BUTTON_BORDERLESS);
+		label.addClickListener(event -> {
+			nav.navigateTo(MainView.VIEW);;
+		});
+		adminButton = new Button("admin", event -> { 
+			nav.navigateTo(AdminView.VIEW);
+		});
+		adminButton.setEnabled(false);
 		Button logoutButton = new Button("logout", event -> { 
-			user.logout();
+			userService.logout();
 			getPage().setLocation("");
 		});
-		actions.addComponent(logoutButton);
+		actions.addComponents(label,adminButton,logoutButton);
+		actions.setExpandRatio(label, 1);
+		actions.setComponentAlignment(adminButton, Alignment.TOP_RIGHT);
 		actions.setComponentAlignment(logoutButton, Alignment.TOP_RIGHT);
 		rootLayout.addComponent(actions);
 	}

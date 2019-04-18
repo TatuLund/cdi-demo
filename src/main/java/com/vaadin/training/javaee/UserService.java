@@ -1,5 +1,8 @@
 package com.vaadin.training.javaee;
 
+import java.util.Objects;
+import java.util.Optional;
+
 import javax.enterprise.event.Event;
 import javax.inject.Inject;
 
@@ -9,7 +12,7 @@ import com.vaadin.cdi.VaadinSessionScoped;
 import com.vaadin.server.VaadinSession;
 
 // This is a simplified demo of session scoped service, used by the application 
-// In real life application you would probably use Shiro or JAAS for security
+// In real life complex application you would probably use Shiro or JAAS for security
 // filter implementation
 @VaadinSessionScoped
 public class UserService {
@@ -17,24 +20,44 @@ public class UserService {
 	@Inject
 	private Logger logger;
 	
-	boolean loggedIn = false;
+	@Inject
+	private UserList userList;
+	
+	private User loggedUser = null;
 	
 	public boolean passesLogin(String username, String password) {
-		boolean passes = username.equals("demo") && password.equals("demo");
-		if (passes) loggedIn = true;
-		return passes;
+		Objects.requireNonNull(username);
+		Objects.requireNonNull(password);
+		userList.getUser(username).ifPresent(user -> {
+			if (user.getPassword().equals(password)) {
+				loggedUser = user;
+				logger.info("User logged in: "+user.getName());
+			} else {
+				logger.info("User used wrong password: "+user.getName());				
+			}
+		});
+		if (loggedUser == null) {
+			logger.warn("Unknown user attempted to log in");			
+		}
+		return loggedUser != null;
 	}
 	
 	public void logout() {
-		loggedIn = false;
-		logger.info("Performing logout");
+		logger.info("User logout: "+loggedUser.getName());
+		loggedUser = null;
 		// This is one of the preferred ways to log out and terminate VaadinSession
 		VaadinSession.getCurrent().getSession().invalidate();
 	}
 	
-	public boolean isLoggedIn() {
-		logger.info("Access check: "+loggedIn);
-		return loggedIn;
+	public User getUser() {
+		return loggedUser;
 	}
-
+	
+	public boolean isAdmin() {
+		if (loggedUser != null) {
+			return loggedUser.isAdmin();
+		} else {
+			throw new IllegalStateException("Can't check user privileges when user not logged in");
+		}
+	}
 }

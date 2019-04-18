@@ -9,6 +9,7 @@ import com.vaadin.cdi.CDIView;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.BrowserWindowOpener;
+import com.vaadin.server.VaadinServlet;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Label;
@@ -50,7 +51,8 @@ public class MainViewImpl extends VerticalLayout implements MainView, View {
 		// navigation to main possible in in new UI within same session
 		Button button = new Button("Open");
 		button.setDescription("Click this button to open new main view in an another browser tab");
-		BrowserWindowOpener opener = new BrowserWindowOpener("http://localhost:8080/javaee-demo-1.0-SNAPSHOT/#!main");
+		BrowserWindowOpener opener = new BrowserWindowOpener(VaadinServlet.getCurrent().getServletContext().getContextPath());
+		opener.setUriFragment("!"+MainView.VIEW);
 		opener.extend(button);		
 		
 		addComponents(label, button, busLabel);
@@ -74,7 +76,7 @@ public class MainViewImpl extends VerticalLayout implements MainView, View {
 	public void enter(ViewChangeEvent event) {
 		presenter.handleLoggedIn();
 		
-		// According to MPR pattern we should not call business logic
+		// According to MVP pattern we should not call business logic
 		// in view directly, we delegate to presenter
 		presenter.requestUpdateBusLabel();
 	}
