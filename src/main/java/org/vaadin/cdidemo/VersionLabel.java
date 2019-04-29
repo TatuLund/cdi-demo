@@ -1,4 +1,4 @@
-package com.vaadin.training.javaee;
+package org.vaadin.cdidemo;
 
 import com.vaadin.cdi.UIScoped;
 import com.vaadin.ui.Label;

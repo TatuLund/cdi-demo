@@ -1,4 +1,4 @@
-package com.vaadin.training.javaee;
+package org.vaadin.cdidemo.data;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,10 +10,10 @@ import javax.enterprise.context.ApplicationScoped;
 // it application scoped in real application we would persist
 // user date in database and store password using hash
 @ApplicationScoped
-public class UserList {
+public class UserListService {
 	private List<User> list = new ArrayList<>();
 	
-	public UserList() {
+	public UserListService() {
 		list.add(new User("Admin","admin",true));
 		list.add(new User("Demo","demo",false));
 		list.add(new User("User","user",false));
@@ -29,7 +29,7 @@ public class UserList {
 		return Optional.ofNullable(found);
 	}
 	
-	List<User> getUsers() {
+	public List<User> getUsers() {
 		return list;
 	}
 }

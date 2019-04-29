@@ -1,4 +1,6 @@
-package com.vaadin.training.javaee;
+package views.admin;
+
+import org.vaadin.cdidemo.data.User;
 
 import com.vaadin.data.Binder;
 import com.vaadin.data.validator.StringLengthValidator;

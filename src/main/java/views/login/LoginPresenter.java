@@ -1,9 +1,11 @@
-package com.vaadin.training.javaee;
+package views.login;
 
 import javax.enterprise.event.Event;
 import javax.inject.Inject;
 
 import org.slf4j.Logger;
+import org.vaadin.cdidemo.LoginEvent;
+import org.vaadin.cdidemo.data.UserProfileHolder;
 
 import com.vaadin.cdi.ViewScoped;
 
@@ -14,7 +16,7 @@ public class LoginPresenter {
 	private Logger logger;
 	
 	@Inject
-	private UserService userService;
+	private UserProfileHolder userService;
 	
 	private LoginView view;
 

@@ -1,9 +1,10 @@
-package com.vaadin.training.javaee;
+package views.login;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
 import org.slf4j.Logger;
+import org.vaadin.cdidemo.VersionLabel;
 
 import com.vaadin.cdi.CDIView;
 import com.vaadin.event.ShortcutAction.KeyCode;

@@ -1,4 +1,4 @@
-package com.vaadin.training.javaee;
+package org.vaadin.cdidemo.data;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -15,13 +15,13 @@ import com.vaadin.server.VaadinSession;
 // In real life complex application you would probably use Shiro or JAAS for security
 // filter implementation
 @VaadinSessionScoped
-public class UserService {
+public class UserProfileHolder {
 	
 	@Inject
 	private Logger logger;
 	
 	@Inject
-	private UserList userList;
+	private UserListService userList;
 	
 	private User loggedUser = null;
 	

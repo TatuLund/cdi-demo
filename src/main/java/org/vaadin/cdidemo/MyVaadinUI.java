@@ -1,10 +1,11 @@
-package com.vaadin.training.javaee;
+package org.vaadin.cdidemo;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.event.Observes;
 import javax.inject.Inject;
 
 import org.slf4j.Logger;
+import org.vaadin.cdidemo.data.UserProfileHolder;
 
 import com.vaadin.annotations.PreserveOnRefresh;
 import com.vaadin.annotations.Theme;
@@ -23,6 +24,10 @@ import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 
+import views.admin.AdminView;
+import views.login.LoginView;
+import views.main.MainView;
+
 @Theme("valo")
 @SuppressWarnings("serial")
 @PreserveOnRefresh
@@ -33,7 +38,7 @@ public class MyVaadinUI extends UI {
 	private Logger logger;
 	
 	@Inject
-	private UserService userService; 
+	private UserProfileHolder userService; 
 
 	@Inject
 	private CDINavigator nav;

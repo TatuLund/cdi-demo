@@ -1,4 +1,4 @@
-package com.vaadin.training.javaee;
+package org.vaadin.cdidemo;
 
 import javax.enterprise.inject.Produces;
 import javax.enterprise.inject.spi.InjectionPoint;

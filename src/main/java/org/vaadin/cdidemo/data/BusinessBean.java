@@ -1,4 +1,4 @@
-package com.vaadin.training.javaee;
+package org.vaadin.cdidemo.data;
 
 import com.vaadin.cdi.ViewScoped;
 

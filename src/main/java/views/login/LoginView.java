@@ -1,4 +1,4 @@
-package com.vaadin.training.javaee;
+package views.login;
 
 public interface LoginView {
 

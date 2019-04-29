@@ -1,4 +1,4 @@
-package com.vaadin.training.javaee;
+package views.admin;
 
 import java.util.List;
 
@@ -6,8 +6,14 @@ import javax.enterprise.event.Event;
 import javax.inject.Inject;
 
 import org.slf4j.Logger;
+import org.vaadin.cdidemo.NotLoggedInEvent;
+import org.vaadin.cdidemo.data.User;
+import org.vaadin.cdidemo.data.UserListService;
+import org.vaadin.cdidemo.data.UserProfileHolder;
 
 import com.vaadin.cdi.CDINavigator;
+
+import views.main.MainView;
 
 public class AdminPresenter {
 
@@ -15,13 +21,13 @@ public class AdminPresenter {
 	private Logger logger;
 	
 	@Inject
-	private UserService userService;
+	private UserProfileHolder userService;
 	
 	@Inject
 	private Event<NotLoggedInEvent> event;
 
 	@Inject 
-	private UserList userList;
+	private UserListService userList;
 	
 	@Inject
 	private CDINavigator nav;
