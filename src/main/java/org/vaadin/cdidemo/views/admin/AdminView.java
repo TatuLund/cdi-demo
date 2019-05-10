@@ -1,4 +1,4 @@
-package views.admin;
+package org.vaadin.cdidemo.views.admin;
 
 public interface AdminView {
 

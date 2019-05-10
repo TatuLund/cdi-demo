@@ -1,4 +1,4 @@
-package views.login;
+package org.vaadin.cdidemo.views.login;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;

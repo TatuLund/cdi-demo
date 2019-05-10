@@ -1,4 +1,4 @@
-package views.admin;
+package org.vaadin.cdidemo.views.admin;
 
 import java.util.List;
 
@@ -10,10 +10,9 @@ import org.vaadin.cdidemo.NotLoggedInEvent;
 import org.vaadin.cdidemo.data.User;
 import org.vaadin.cdidemo.data.UserListService;
 import org.vaadin.cdidemo.data.UserProfileHolder;
+import org.vaadin.cdidemo.views.main.MainView;
 
 import com.vaadin.cdi.CDINavigator;
-
-import views.main.MainView;
 
 public class AdminPresenter {
 

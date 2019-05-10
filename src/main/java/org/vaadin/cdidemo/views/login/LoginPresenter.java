@@ -1,4 +1,4 @@
-package views.login;
+package org.vaadin.cdidemo.views.login;
 
 import javax.enterprise.event.Event;
 import javax.inject.Inject;

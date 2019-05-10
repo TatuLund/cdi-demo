@@ -1,4 +1,4 @@
-package views.main;
+package org.vaadin.cdidemo.views.main;
 
 public interface MainView {
 

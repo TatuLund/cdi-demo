@@ -1,4 +1,4 @@
-package views.login;
+package org.vaadin.cdidemo.views.login;
 
 public interface LoginView {
 

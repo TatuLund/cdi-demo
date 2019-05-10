@@ -6,6 +6,9 @@ import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.vaadin.cdidemo.data.UserProfileHolder;
+import org.vaadin.cdidemo.views.admin.AdminView;
+import org.vaadin.cdidemo.views.login.LoginView;
+import org.vaadin.cdidemo.views.main.MainView;
 
 import com.vaadin.annotations.PreserveOnRefresh;
 import com.vaadin.annotations.Theme;
@@ -23,10 +26,6 @@ import com.vaadin.ui.Notification;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
-
-import views.admin.AdminView;
-import views.login.LoginView;
-import views.main.MainView;
 
 @Theme("valo")
 @SuppressWarnings("serial")

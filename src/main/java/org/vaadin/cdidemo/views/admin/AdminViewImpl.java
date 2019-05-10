@@ -1,4 +1,4 @@
-package views.admin;
+package org.vaadin.cdidemo.views.admin;
 
 import java.util.List;
 
