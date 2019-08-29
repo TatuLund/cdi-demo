@@ -1,15 +1,18 @@
 package org.vaadin.cdidemo.views.admin;
 
-import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.stream.Stream;
 
+import javax.annotation.Resource;
+import javax.enterprise.concurrent.ManagedExecutorService;
 import javax.enterprise.event.Event;
 import javax.inject.Inject;
 
 import org.slf4j.Logger;
-import org.vaadin.cdidemo.NotLoggedInEvent;
 import org.vaadin.cdidemo.data.User;
 import org.vaadin.cdidemo.data.UserListService;
 import org.vaadin.cdidemo.data.UserProfileHolder;
+import org.vaadin.cdidemo.events.NotLoggedInEvent;
 import org.vaadin.cdidemo.views.main.MainView;
 
 import com.vaadin.cdi.CDINavigator;
@@ -33,13 +36,21 @@ public class AdminPresenter {
 	
 	private AdminView view;
 
+	// Executor is injected with @Resource annotation instead of @Inject
+	@Resource
+	ManagedExecutorService executor;
+	
 	public void setView(AdminView adminView) {
 		view = adminView;
 	}
 
-	public List<User> getUserList() {
-		// TODO Auto-generated method stub
-		return userList.getUsers();
+	public void requestUpdateUsers() {
+		// Since database calls may take long, they should be done async using
+		// Executors for threading and futures.
+		final CompletableFuture<Stream<User>> future = CompletableFuture.supplyAsync(() -> userList.getUsers(),executor);
+		future.thenAccept(users -> {
+			view.updateUsers(users);
+		});
 	}
 	
 	public void handlePrivilegesAndLoggedIn() {

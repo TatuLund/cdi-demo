@@ -6,17 +6,22 @@ import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.vaadin.cdidemo.data.UserProfileHolder;
+import org.vaadin.cdidemo.events.AlreadyLoggedInEvent;
+import org.vaadin.cdidemo.events.LoginEvent;
+import org.vaadin.cdidemo.events.NotLoggedInEvent;
 import org.vaadin.cdidemo.views.admin.AdminView;
 import org.vaadin.cdidemo.views.login.LoginView;
 import org.vaadin.cdidemo.views.main.MainView;
 
 import com.vaadin.annotations.PreserveOnRefresh;
+import com.vaadin.annotations.Push;
 import com.vaadin.annotations.Theme;
 import com.vaadin.cdi.CDINavigator;
 import com.vaadin.cdi.CDIUI;
 import com.vaadin.server.Page;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
+import com.vaadin.shared.communication.PushMode;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.CssLayout;
@@ -30,6 +35,7 @@ import com.vaadin.ui.themes.ValoTheme;
 @Theme("valo")
 @SuppressWarnings("serial")
 @PreserveOnRefresh
+@Push
 @CDIUI("")
 public class MyVaadinUI extends UI {
 
@@ -71,9 +77,16 @@ public class MyVaadinUI extends UI {
 	public void setupNavigator() {
 		logger.info("UI PostConstruct");
 	}	
-	
+
+	// Todo: Refactor these to navigation service
 	private void navigateToMain(@Observes LoginEvent event) {
 		Notification.show("Login succesful! Welcome "+event.getUser());
+		adminButton.setEnabled(userService.isAdmin());
+		logger.info("Rerouting to main view");
+		nav.navigateTo(MainView.VIEW);
+	}
+
+	private void navigateToMain(@Observes AlreadyLoggedInEvent event) {
 		adminButton.setEnabled(userService.isAdmin());
 		logger.info("Rerouting to main view");
 		nav.navigateTo(MainView.VIEW);
@@ -103,7 +116,9 @@ public class MyVaadinUI extends UI {
 			nav.navigateTo(AdminView.VIEW);
 		});
 		adminButton.setEnabled(userService.getUser() != null && userService.getUser().isAdmin());
-		Button logoutButton = new Button("logout", event -> { 
+		Button logoutButton = new Button("logout", event -> {
+			// Stop Push in order to avoid stupid exception
+			UI.getCurrent().getPushConfiguration().setPushMode(PushMode.DISABLED);
 			userService.logout();
 			getPage().setLocation("");
 		});

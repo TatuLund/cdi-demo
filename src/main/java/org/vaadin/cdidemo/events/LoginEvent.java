@@ -1,4 +1,4 @@
-package org.vaadin.cdidemo;
+package org.vaadin.cdidemo.events;
 
 public class LoginEvent {
 	String user;

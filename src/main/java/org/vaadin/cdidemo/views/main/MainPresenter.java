@@ -4,9 +4,9 @@ import javax.enterprise.event.Event;
 import javax.inject.Inject;
 
 import org.slf4j.Logger;
-import org.vaadin.cdidemo.NotLoggedInEvent;
 import org.vaadin.cdidemo.data.BusinessBean;
 import org.vaadin.cdidemo.data.UserProfileHolder;
+import org.vaadin.cdidemo.events.NotLoggedInEvent;
 
 import com.vaadin.cdi.ViewScoped;
 

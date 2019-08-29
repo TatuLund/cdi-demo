@@ -74,5 +74,6 @@ public class LoginViewImpl extends VerticalLayout implements LoginView, View {
 
 	@Override
 	public void enter(ViewChangeEvent event) {
+		presenter.handleLoggedIn();
 	}
 }

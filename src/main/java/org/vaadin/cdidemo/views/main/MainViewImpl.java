@@ -17,12 +17,6 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 
-/**
- * Solution to the bonus task
- *
- * @author Vaadin Ltd
- *
- */
 @SuppressWarnings("serial")
 @CDIView(MainView.VIEW)
 public class MainViewImpl extends VerticalLayout implements MainView, View {
