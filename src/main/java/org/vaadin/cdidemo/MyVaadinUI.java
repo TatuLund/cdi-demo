@@ -69,12 +69,8 @@ public class MyVaadinUI extends UI {
 		createContentArea();
 		setSizeFull();
 		nav.init(this, contentArea);		
-//		String uriFragment = Page.getCurrent().getUriFragment();
-//		if (uriFragment != null && uriFragment.equals("!"+MainView.VIEW)) {
-//			nav.navigateTo(MainView.VIEW);			
-//		} else {
-//			nav.navigateTo(LoginView.VIEW);			
-//		}
+		// Process possible query parameters and check they contain
+		// the one we are interested
 		Map<String, String[]> params = request.getParameterMap();
 		if (params != null) {
 			if (params.get("print") != null) {

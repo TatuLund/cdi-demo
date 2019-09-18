@@ -54,7 +54,9 @@ public class MainViewImpl extends VerticalLayout implements MainView, View {
 		Button button = new Button("Open");
 		button.setDescription("Click this button to open new main view in an another browser tab");
 		BrowserWindowOpener opener = new BrowserWindowOpener(VaadinServlet.getCurrent().getServletContext().getContextPath());
+		// View parameters can be added directly to URI fragments
 		opener.setUriFragment("!"+MainView.VIEW+"/hello=world");
+		// Query parameters are given with setParameter of BrowserWindowOpener
 		opener.setParameter("print", "true");
 		opener.extend(button);		
 				
@@ -79,6 +81,7 @@ public class MainViewImpl extends VerticalLayout implements MainView, View {
 	@Override
 	public void enter(ViewChangeEvent event) {
 		presenter.handleLoggedIn();
+		// View parameters can be accessed via ViewChangeEvent
 		Map<String, String> params = event.getParameterMap();
 		if (params != null) {
 			for (String key : params.keySet()) {
@@ -87,6 +90,7 @@ public class MainViewImpl extends VerticalLayout implements MainView, View {
 				container.setComponentAlignment(label, Alignment.MIDDLE_LEFT);
 			}
 		}
+		// Query parameters are handled in UI
 		MyVaadinUI ui = (MyVaadinUI) UI.getCurrent();
 		if (ui.getPrintMode()) {
 			Label label = new Label("Printing");
