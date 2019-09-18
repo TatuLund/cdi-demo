@@ -1,5 +1,7 @@
 package org.vaadin.cdidemo;
 
+import java.util.Map;
+
 import javax.annotation.PostConstruct;
 import javax.enterprise.event.Observes;
 import javax.inject.Inject;
@@ -56,6 +58,8 @@ public class MyVaadinUI extends UI {
 	private VerticalLayout rootLayout;
 
 	private Button adminButton;
+
+	private boolean printMode = false;
 	
 	@Override
 	protected void init(VaadinRequest request) {
@@ -65,11 +69,17 @@ public class MyVaadinUI extends UI {
 		createContentArea();
 		setSizeFull();
 		nav.init(this, contentArea);		
-		String uriFragment = Page.getCurrent().getUriFragment();
-		if (uriFragment != null && uriFragment.equals("!"+MainView.VIEW)) {
-			nav.navigateTo(MainView.VIEW);			
-		} else {
-			nav.navigateTo(LoginView.VIEW);			
+//		String uriFragment = Page.getCurrent().getUriFragment();
+//		if (uriFragment != null && uriFragment.equals("!"+MainView.VIEW)) {
+//			nav.navigateTo(MainView.VIEW);			
+//		} else {
+//			nav.navigateTo(LoginView.VIEW);			
+//		}
+		Map<String, String[]> params = request.getParameterMap();
+		if (params != null) {
+			if (params.get("print") != null) {
+				printMode = true;
+			}
 		}
 	}
 
@@ -77,6 +87,10 @@ public class MyVaadinUI extends UI {
 	public void setupNavigator() {
 		logger.info("UI PostConstruct");
 	}	
+	
+	public boolean getPrintMode() {
+		return printMode;
+	}
 
 	// Todo: Refactor these to navigation service
 	private void navigateToMain(@Observes LoginEvent event) {

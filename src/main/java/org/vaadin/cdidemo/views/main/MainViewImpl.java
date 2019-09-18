@@ -1,9 +1,12 @@
 package org.vaadin.cdidemo.views.main;
 
+import java.util.Map;
+
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
 import org.slf4j.Logger;
+import org.vaadin.cdidemo.MyVaadinUI;
 import org.vaadin.cdidemo.VersionLabel;
 
 import com.vaadin.cdi.CDIView;
@@ -13,7 +16,9 @@ import com.vaadin.server.BrowserWindowOpener;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 
@@ -32,6 +37,8 @@ public class MainViewImpl extends VerticalLayout implements MainView, View {
 	
 	private Label busLabel = new Label("no data");
 
+	private HorizontalLayout container = new HorizontalLayout();
+
 	public MainViewImpl() {
 		setSizeFull();
 
@@ -47,12 +54,14 @@ public class MainViewImpl extends VerticalLayout implements MainView, View {
 		Button button = new Button("Open");
 		button.setDescription("Click this button to open new main view in an another browser tab");
 		BrowserWindowOpener opener = new BrowserWindowOpener(VaadinServlet.getCurrent().getServletContext().getContextPath());
-		opener.setUriFragment("!"+MainView.VIEW);
+		opener.setUriFragment("!"+MainView.VIEW+"/hello=world");
+		opener.setParameter("print", "true");
 		opener.extend(button);		
-		
-		addComponents(label, button, busLabel);
+				
+		addComponents(label, button, container, busLabel);
 		setComponentAlignment(label, Alignment.MIDDLE_CENTER);
-		setComponentAlignment(button, Alignment.MIDDLE_CENTER);		
+		setComponentAlignment(button, Alignment.MIDDLE_CENTER);	
+		setComponentAlignment(container, Alignment.MIDDLE_CENTER);
 		setComponentAlignment(busLabel, Alignment.MIDDLE_CENTER);		
 	}
 
@@ -70,7 +79,20 @@ public class MainViewImpl extends VerticalLayout implements MainView, View {
 	@Override
 	public void enter(ViewChangeEvent event) {
 		presenter.handleLoggedIn();
-		
+		Map<String, String> params = event.getParameterMap();
+		if (params != null) {
+			for (String key : params.keySet()) {
+				Label label = new Label(key+" = "+params.get(key));
+				container.addComponent(label);
+				container.setComponentAlignment(label, Alignment.MIDDLE_LEFT);
+			}
+		}
+		MyVaadinUI ui = (MyVaadinUI) UI.getCurrent();
+		if (ui.getPrintMode()) {
+			Label label = new Label("Printing");
+			container.addComponent(label);
+			container.setComponentAlignment(label, Alignment.MIDDLE_RIGHT);			
+		}
 		// According to MVP pattern we should not call business logic
 		// in view directly, we delegate to presenter
 		presenter.requestUpdateBusLabel();
