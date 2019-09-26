@@ -32,6 +32,7 @@ Here is a brief summary what you can find here
   - Using UIScoped (VersionLabel) and ViewScoped beans
   - Access control
   - Opening new browser tab with BrowserWindowOpener (demoing VaadinSessionScoped user enitity)
+  - Demoing passing query and view parameters
  
  - LoginView
    - Simple login example
