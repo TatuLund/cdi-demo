@@ -1,17 +1,7 @@
 package org.vaadin.cdidemo.data;
 
-import com.vaadin.cdi.ViewScoped;
+public interface BusinessBean {
 
-// Example of business bean
-@ViewScoped
-public class BusinessBean {
-	private String businessData = null;
-		
-	public BusinessBean() {
-		this.businessData = "Business data";
-	}
-	
-	public String getBusinessData() {
-		return businessData;
-	}
+	String getBusinessData();
+
 }

@@ -1,5 +1,7 @@
 package org.vaadin.cdidemo.events;
 
-public class AlreadyLoggedInEvent {
+import java.io.Serializable;
+
+public class AlreadyLoggedInEvent implements Serializable {
 
 }

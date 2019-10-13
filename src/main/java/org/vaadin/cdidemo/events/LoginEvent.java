@@ -1,6 +1,8 @@
 package org.vaadin.cdidemo.events;
 
-public class LoginEvent {
+import java.io.Serializable;
+
+public class LoginEvent implements Serializable {
 	String user;
 
 	public LoginEvent(String userName) {

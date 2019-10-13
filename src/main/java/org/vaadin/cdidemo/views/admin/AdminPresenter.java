@@ -1,5 +1,6 @@
 package org.vaadin.cdidemo.views.admin;
 
+import java.io.Serializable;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Stream;
 
@@ -17,7 +18,7 @@ import org.vaadin.cdidemo.views.main.MainView;
 
 import com.vaadin.cdi.CDINavigator;
 
-public class AdminPresenter {
+public class AdminPresenter implements Serializable {
 
 	@Inject
 	private Logger logger;

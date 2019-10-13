@@ -1,5 +1,7 @@
 package org.vaadin.cdidemo.views.main;
 
+import java.io.Serializable;
+
 import javax.enterprise.event.Event;
 import javax.inject.Inject;
 
@@ -11,7 +13,7 @@ import org.vaadin.cdidemo.events.NotLoggedInEvent;
 import com.vaadin.cdi.ViewScoped;
 
 @ViewScoped
-public class MainPresenter {
+public class MainPresenter implements Serializable {
 
 	@Inject
 	private Logger logger;
