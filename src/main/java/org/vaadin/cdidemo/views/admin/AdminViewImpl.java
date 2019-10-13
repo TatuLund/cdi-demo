@@ -13,8 +13,10 @@ import com.vaadin.cdi.CDIView;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.ui.Alignment;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.UIDetachedException;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.themes.ValoTheme;
 
 @CDIView(AdminView.VIEW)
 public class AdminViewImpl extends VerticalLayout implements AdminView, View {
@@ -40,6 +42,10 @@ public class AdminViewImpl extends VerticalLayout implements AdminView, View {
 		// Ask presenter to start process of updating user list
 		presenter.requestUpdateUsers();
 		userContainer.setSizeFull();
+		Label loading = new Label();
+		loading.setStyleName(ValoTheme.LABEL_SPINNER);
+		userContainer.addComponent(loading);
+		userContainer.setComponentAlignment(loading, Alignment.MIDDLE_CENTER);
 		addComponents(userContainer,versionLabel);
 		setComponentAlignment(versionLabel, Alignment.BOTTOM_RIGHT);
 	}
