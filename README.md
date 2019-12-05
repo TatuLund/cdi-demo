@@ -14,6 +14,9 @@ Here is a brief summary what you can find here
   - Usage of @CDIUI annotation
   - Injectable CDINavigator
   - Using CDI events to trigger navigation
+  - Extending VaadinCDIServlet and setting SessionExpired error not to show
+    and directly refresh the UI to login
+  - Parse query parameters
 
 - VersionLabel: Shared UIScoped component used by multiple views
 
@@ -26,7 +29,8 @@ Here is a brief summary what you can find here
 
 - AdminView
   - Access control with restricted access
-  - Async update of the view content using ManagedExecutorService and CompletableFuture
+  - Async update of the view content using ManagedExecutorService and CompletableFuture,
+    showing spinner while loading
 
 - MainView
   - Using UIScoped (VersionLabel) and ViewScoped beans
