@@ -5,6 +5,8 @@ import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.enterprise.event.Observes;
 import javax.inject.Inject;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 
 import org.slf4j.Logger;
 import org.vaadin.cdidemo.data.UserProfileHolder;
@@ -18,9 +20,15 @@ import org.vaadin.cdidemo.views.main.MainView;
 import com.vaadin.annotations.PreserveOnRefresh;
 import com.vaadin.annotations.Push;
 import com.vaadin.annotations.Theme;
+import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.cdi.CDINavigator;
 import com.vaadin.cdi.CDIUI;
+import com.vaadin.cdi.server.VaadinCDIServlet;
+import com.vaadin.server.CustomizedSystemMessages;
 import com.vaadin.server.Page;
+import com.vaadin.server.SystemMessages;
+import com.vaadin.server.SystemMessagesInfo;
+import com.vaadin.server.SystemMessagesProvider;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.shared.communication.PushMode;
@@ -81,7 +89,7 @@ public class MyVaadinUI extends UI {
 			nav.navigateTo(MainView.VIEW);			
 		} else {
 			nav.navigateTo(LoginView.VIEW);			
-		}		
+		}
 	}
 
 	@PostConstruct
@@ -150,5 +158,23 @@ public class MyVaadinUI extends UI {
 		rootLayout.addComponent(contentArea);
 		rootLayout.setExpandRatio(contentArea, 1.0f);
 	}
+	
+    @WebServlet(value = "/*", asyncSupported = true)
+    @VaadinServletConfiguration(productionMode = false, ui = MyVaadinUI.class)
+    public static class MyServlet extends VaadinCDIServlet {
+        @Override
+        protected void servletInitialized() throws ServletException {
+            super.servletInitialized();
 
+            getService().setSystemMessagesProvider(new SystemMessagesProvider() {
+				@Override
+				public SystemMessages getSystemMessages(SystemMessagesInfo systemMessagesInfo) {
+        			CustomizedSystemMessages messages = new CustomizedSystemMessages();
+    				messages.setSessionExpiredNotificationEnabled(false);
+    				messages.setSessionExpiredURL(null);
+					return messages;
+				}
+            });
+        }
+    }	
 }

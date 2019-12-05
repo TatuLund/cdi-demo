@@ -2,9 +2,7 @@ package org.vaadin.cdidemo.data;
 
 import java.io.Serializable;
 import java.util.Objects;
-import java.util.Optional;
 
-import javax.enterprise.event.Event;
 import javax.inject.Inject;
 
 import org.slf4j.Logger;
