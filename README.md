@@ -42,3 +42,5 @@ Here is a brief summary what you can find here
    - Simple login example
    - Using UIScoped (VersionLabel) bean
   
+ - DemoUtils
+   - Proper way of session fixation protection used in login process
