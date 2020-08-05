@@ -31,7 +31,7 @@ public class AdminPresenter implements Serializable {
 
 	@Inject 
 	private UserListService userList;
-	
+
 	@Inject
 	private CDINavigator nav;
 	

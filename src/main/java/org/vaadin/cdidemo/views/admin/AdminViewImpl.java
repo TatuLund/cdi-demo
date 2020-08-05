@@ -53,7 +53,7 @@ public class AdminViewImpl extends VerticalLayout implements AdminView, View {
 	// Update users in ui.access() since this method will be called from
 	// background thread, we will avoid using threads in View classes and
 	// use them in Presenter or Model instead
-	public void updateUsers(Stream<User> users) {
+	public void updateUsers(Stream<User> users) {		
 		try {
 			getUI().access(() -> {
 				userContainer.removeAllComponents();

@@ -32,6 +32,7 @@ import com.vaadin.server.SystemMessagesProvider;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.shared.communication.PushMode;
+import com.vaadin.shared.ui.ui.Transport;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.CssLayout;
@@ -44,7 +45,7 @@ import com.vaadin.ui.themes.ValoTheme;
 @Theme("valo")
 @SuppressWarnings("serial")
 @PreserveOnRefresh
-@Push
+@Push(transport = Transport.WEBSOCKET_XHR)
 @CDIUI("")
 public class MyVaadinUI extends UI {
 
@@ -67,7 +68,7 @@ public class MyVaadinUI extends UI {
 	private Button adminButton;
 
 	private boolean printMode = false;
-	
+
 	@Override
 	protected void init(VaadinRequest request) {
 		logger.info("UI Init: "+VaadinServlet.getCurrent().getServletContext().getContextPath());
@@ -133,9 +134,9 @@ public class MyVaadinUI extends UI {
 		Button label = new Button("CDI Demo");
 		label.addStyleName(ValoTheme.BUTTON_BORDERLESS);
 		label.addClickListener(event -> {
-			nav.navigateTo(MainView.VIEW);;
+			nav.navigateTo(MainView.VIEW+"/hello=world");
 		});
-		adminButton = new Button("admin", event -> { 
+		adminButton = new Button("admin", event -> {
 			nav.navigateTo(AdminView.VIEW);
 		});
 		adminButton.setEnabled(userService.getUser() != null && userService.getUser().isAdmin());
@@ -172,9 +173,12 @@ public class MyVaadinUI extends UI {
         			CustomizedSystemMessages messages = new CustomizedSystemMessages();
     				messages.setSessionExpiredNotificationEnabled(false);
     				messages.setSessionExpiredURL(null);
+    				messages.setCommunicationErrorNotificationEnabled(false);
+    				messages.setCommunicationErrorURL(null);
 					return messages;
 				}
-            });
+            });            
         }
+
     }	
 }

@@ -9,9 +9,10 @@ import org.slf4j.Logger;
 import org.vaadin.cdidemo.data.UserProfileHolder;
 import org.vaadin.cdidemo.events.AlreadyLoggedInEvent;
 import org.vaadin.cdidemo.events.LoginEvent;
-import org.vaadin.cdidemo.events.NotLoggedInEvent;
+import org.vaadin.cdidemo.util.DemoUtils;
 
 import com.vaadin.cdi.ViewScoped;
+import com.vaadin.server.VaadinSession;
 
 @ViewScoped
 public class LoginPresenter implements Serializable {
@@ -36,12 +37,16 @@ public class LoginPresenter implements Serializable {
 
 	public void login(String username, String password) {
 		// Delegate login processing to Session scoped user service
+		logger.info("Session id: "+VaadinSession.getCurrent().getSession().getId());
 		if (userService.passesLogin(username, password)) {
-			loginEvent.fire(new LoginEvent(username));
+			DemoUtils.sessionFixation();
+			logger.info("New session id: "+VaadinSession.getCurrent().getSession().getId());
+        	loginEvent.fire(new LoginEvent(username));
 		} else {
 			view.showError("Login failed");
 		}
 	}
+
 
 	public void handleLoggedIn() {
 		if (userService.getUser() != null) {

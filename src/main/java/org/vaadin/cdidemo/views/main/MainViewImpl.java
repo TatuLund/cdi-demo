@@ -39,7 +39,9 @@ public class MainViewImpl extends VerticalLayout implements MainView, View {
 
 	private HorizontalLayout container = new HorizontalLayout();
 
-	public MainViewImpl() {
+	@Inject
+	public MainViewImpl(Logger logger) {
+		logger.info("MainView: Constructor");
 		setSizeFull();
 
 		Label label = new Label("main view");
@@ -69,6 +71,7 @@ public class MainViewImpl extends VerticalLayout implements MainView, View {
 
 	@PostConstruct
 	public void init() {
+		logger.info("MainView: Post construct");
 		presenter.setView(this);
 		addComponents(versionLabel);
 		setComponentAlignment(versionLabel, Alignment.BOTTOM_RIGHT);		
@@ -80,6 +83,7 @@ public class MainViewImpl extends VerticalLayout implements MainView, View {
 	
 	@Override
 	public void enter(ViewChangeEvent event) {
+		logger.info("MainView: Enter");
 		presenter.handleLoggedIn();
 		// View parameters can be accessed via ViewChangeEvent
 		Map<String, String> params = event.getParameterMap();
