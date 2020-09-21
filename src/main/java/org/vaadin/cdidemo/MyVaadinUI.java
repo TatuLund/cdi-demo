@@ -180,5 +180,6 @@ public class MyVaadinUI extends UI {
             });            
         }
 
-    }	
+    }
+
 }

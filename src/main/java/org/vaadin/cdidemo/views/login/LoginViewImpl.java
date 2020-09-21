@@ -1,5 +1,7 @@
 package org.vaadin.cdidemo.views.login;
 
+import java.util.Date;
+
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
@@ -13,10 +15,12 @@ import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.FormLayout;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Notification.Type;
 import com.vaadin.ui.PasswordField;
 import com.vaadin.ui.TextField;
+import com.vaadin.ui.UIDetachedException;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 
@@ -33,14 +37,19 @@ public class LoginViewImpl extends VerticalLayout implements LoginView, View {
 	@Inject
 	Logger logger;
 	
+	Label timeStampLabel = new Label(new Date().toString());
+
 	public LoginViewImpl() {
 
 		setSizeFull();
 
+		timeStampLabel.addStyleName(ValoTheme.LABEL_SMALL);
+
 		final FormLayout form = new FormLayout();
 		form.setSizeUndefined();
-		addComponents(form);
+		addComponents(timeStampLabel,form);
 		setComponentAlignment(form, Alignment.MIDDLE_CENTER);
+		setComponentAlignment(timeStampLabel, Alignment.MIDDLE_CENTER);
 
 		final TextField name = new TextField("Username");
 		form.addComponent(name);
@@ -75,5 +84,22 @@ public class LoginViewImpl extends VerticalLayout implements LoginView, View {
 	@Override
 	public void enter(ViewChangeEvent event) {
 		presenter.handleLoggedIn();
+	}
+
+	@Override
+	public void setTimeStamp(String timeStamp) {
+		try {
+			getUI().access(() -> {
+				timeStampLabel.setValue(timeStamp);
+			});
+		} catch (UIDetachedException e) {
+			logger.info("Timer event received, but time stamp not updated as UI was closed");
+		}
+	}
+
+	@Override
+	public void detach() {
+		presenter.removeTimer();
+		super.detach();
 	}
 }

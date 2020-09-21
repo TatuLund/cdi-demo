@@ -1,11 +1,15 @@
 package org.vaadin.cdidemo.views.login;
 
 import java.io.Serializable;
+import java.util.Date;
 
+import javax.annotation.PostConstruct;
 import javax.enterprise.event.Event;
 import javax.inject.Inject;
 
 import org.slf4j.Logger;
+import org.vaadin.cdidemo.beacon.Beacon;
+import org.vaadin.cdidemo.beacon.Beacon.TimerListener;
 import org.vaadin.cdidemo.data.UserProfileHolder;
 import org.vaadin.cdidemo.events.AlreadyLoggedInEvent;
 import org.vaadin.cdidemo.events.LoginEvent;
@@ -15,7 +19,7 @@ import com.vaadin.cdi.ViewScoped;
 import com.vaadin.server.VaadinSession;
 
 @ViewScoped
-public class LoginPresenter implements Serializable {
+public class LoginPresenter implements Serializable, TimerListener {
 
 	@Inject
 	private Logger logger;
@@ -31,6 +35,9 @@ public class LoginPresenter implements Serializable {
 	@Inject
 	private Event<AlreadyLoggedInEvent> alreadyLoggedEvent;
 
+	@Inject
+	Beacon beacon;
+	
 	public void setView(LoginView login) {
 		view = login;
 	}
@@ -53,5 +60,19 @@ public class LoginPresenter implements Serializable {
 			logger.warn("User is already logged in");
 			alreadyLoggedEvent.fire(new AlreadyLoggedInEvent());
 		}
-	}	
+	}
+
+	@PostConstruct
+	private void init() {
+		beacon.registerTimerListener(this);
+	}
+
+	public void removeTimer() {
+		beacon.unregisterTimerListener(this);
+	}
+
+	@Override
+	public void timeStampUpdated(Date timeStamp) {
+		view.setTimeStamp(timeStamp.toString());		
+	}
 }

@@ -7,4 +7,6 @@ public interface LoginView {
 	public static final String VIEW = "login";
 		
 	public void showError(String error);
+
+	public void setTimeStamp(String timeStamp);
 }
