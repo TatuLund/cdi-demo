@@ -49,117 +49,123 @@ import com.vaadin.ui.themes.ValoTheme;
 @CDIUI("")
 public class MyVaadinUI extends UI {
 
-	@Inject
-	private Logger logger;
-	
-	@Inject
-	private UserProfileHolder userService; 
+    @Inject
+    private Logger logger;
 
-	@Inject
-	private CDINavigator nav;
-	
-	// Note: Here we do not inject CDIViewProvider, since it is actually not mandatory
-	// if you are ok with default view provider, it is used automatically
-	
-	private CssLayout contentArea;
-	private HorizontalLayout actions;
-	private VerticalLayout rootLayout;
+    @Inject
+    private UserProfileHolder userService;
 
-	private Button adminButton;
+    @Inject
+    private CDINavigator nav;
 
-	private boolean printMode = false;
+    // Note: Here we do not inject CDIViewProvider, since it is actually not
+    // mandatory
+    // if you are ok with default view provider, it is used automatically
 
-	@Override
-	protected void init(VaadinRequest request) {
-		logger.info("UI Init: "+VaadinServlet.getCurrent().getServletContext().getContextPath());
-		createRootLayout();
-		createActions();
-		createContentArea();
-		setSizeFull();
-		nav.init(this, contentArea);		
-		// Process possible query parameters and check they contain
-		// the one we are interested
-		Map<String, String[]> params = request.getParameterMap();
-		if (params != null) {
-			if (params.get("print") != null) {
-				printMode = true;
-			}
-		}
-		String uriFragment = Page.getCurrent().getUriFragment();
-		if (uriFragment != null && uriFragment.equals("!"+MainView.VIEW)) {
-			nav.navigateTo(MainView.VIEW);			
-		} else {
-			nav.navigateTo(LoginView.VIEW);			
-		}
-	}
+    private CssLayout contentArea;
+    private HorizontalLayout actions;
+    private VerticalLayout rootLayout;
 
-	@PostConstruct
-	public void setupNavigator() {
-		logger.info("UI PostConstruct");
-	}	
-	
-	public boolean getPrintMode() {
-		return printMode;
-	}
+    private Button adminButton;
 
-	// Todo: Refactor these to navigation service
-	private void navigateToMain(@Observes LoginEvent event) {
-		Notification.show("Login succesful! Welcome "+event.getUser());
-		adminButton.setEnabled(userService.isAdmin());
-		logger.info("Rerouting to main view");
-		nav.navigateTo(MainView.VIEW);
-	}
+    private boolean printMode = false;
 
-	private void navigateToMain(@Observes AlreadyLoggedInEvent event) {
-		adminButton.setEnabled(userService.isAdmin());
-		logger.info("Rerouting to main view");
-		nav.navigateTo(MainView.VIEW);
-	}
+    private Button label;
 
-	private void navigateToLogin(@Observes NotLoggedInEvent event) {
-		Notification.show("Please login first");
-		logger.info("Rerouting to login page");
-		nav.navigateTo(LoginView.VIEW);
-	}
+    @Override
+    protected void init(VaadinRequest request) {
+        logger.info("UI Init: " + VaadinServlet.getCurrent().getServletContext()
+                .getContextPath());
+        createRootLayout();
+        createActions();
+        createContentArea();
+        setSizeFull();
+        nav.init(this, contentArea);
+        // Process possible query parameters and check they contain
+        // the one we are interested
+        Map<String, String[]> params = request.getParameterMap();
+        if (params != null) {
+            if (params.get("print") != null) {
+                printMode = true;
+            }
+        }
+        String uriFragment = Page.getCurrent().getUriFragment();
+        if (uriFragment != null && uriFragment.equals("!" + MainView.VIEW)) {
+            nav.navigateTo(MainView.VIEW);
+        } else {
+            nav.navigateTo(LoginView.VIEW);
+        }
+    }
 
-	private void createRootLayout() {
-		rootLayout = new VerticalLayout();
-		rootLayout.setSizeFull();
-		setContent(rootLayout);
-	}
+    @PostConstruct
+    public void setupNavigator() {
+        logger.info("UI PostConstruct");
+    }
 
-	private void createActions() {
-		actions = new HorizontalLayout();
-		actions.setWidth("100%");
-		Button label = new Button("CDI Demo");
-		label.addStyleName(ValoTheme.BUTTON_BORDERLESS);
-		label.addClickListener(event -> {
-			nav.navigateTo(MainView.VIEW+"/hello=world");
-		});
-		adminButton = new Button("admin", event -> {
-			nav.navigateTo(AdminView.VIEW);
-		});
-		adminButton.setEnabled(userService.getUser() != null && userService.getUser().isAdmin());
-		Button logoutButton = new Button("logout", event -> {
-			// Stop Push in order to avoid stupid exception
-			UI.getCurrent().getPushConfiguration().setPushMode(PushMode.DISABLED);
-			userService.logout();
-			getPage().setLocation("");
-		});
-		actions.addComponents(label,adminButton,logoutButton);
-		actions.setExpandRatio(label, 1);
-		actions.setComponentAlignment(adminButton, Alignment.TOP_RIGHT);
-		actions.setComponentAlignment(logoutButton, Alignment.TOP_RIGHT);
-		rootLayout.addComponent(actions);
-	}
+    public boolean getPrintMode() {
+        return printMode;
+    }
 
-	private void createContentArea() {
-		contentArea = new CssLayout();
-		contentArea.setSizeFull();
-		rootLayout.addComponent(contentArea);
-		rootLayout.setExpandRatio(contentArea, 1.0f);
-	}
-	
+    // Todo: Refactor these to navigation service
+    private void navigateToMain(@Observes LoginEvent event) {
+        Notification.show("Login succesful! Welcome " + event.getUser());
+        adminButton.setEnabled(userService.isAdmin());
+        logger.info("Rerouting to main view");
+        nav.navigateTo(MainView.VIEW);
+    }
+
+    private void navigateToMain(@Observes AlreadyLoggedInEvent event) {
+        adminButton.setEnabled(userService.isAdmin());
+        logger.info("Rerouting to main view");
+        nav.navigateTo(MainView.VIEW);
+    }
+
+    private void navigateToLogin(@Observes NotLoggedInEvent event) {
+        Notification.show("Please login first");
+        logger.info("Rerouting to login page");
+        nav.navigateTo(LoginView.VIEW);
+    }
+
+    private void createRootLayout() {
+        rootLayout = new VerticalLayout();
+        rootLayout.setSizeFull();
+        setContent(rootLayout);
+    }
+
+    private void createActions() {
+        actions = new HorizontalLayout();
+        actions.setWidth("100%");
+        label = new Button("CDI Demo");
+        label.addStyleName(ValoTheme.BUTTON_BORDERLESS);
+        label.addClickListener(event -> {
+            nav.navigateTo(MainView.VIEW + "/hello=world");
+        });
+        adminButton = new Button("admin", event -> {
+            nav.navigateTo(AdminView.VIEW);
+        });
+        adminButton.setEnabled(userService.getUser() != null
+                && userService.getUser().isAdmin());
+        Button logoutButton = new Button("logout", event -> {
+            // Stop Push in order to avoid stupid exception
+            UI.getCurrent().getPushConfiguration()
+                    .setPushMode(PushMode.DISABLED);
+            userService.logout();
+            getPage().setLocation("");
+        });
+        actions.addComponents(label, adminButton, logoutButton);
+        actions.setExpandRatio(label, 1);
+        actions.setComponentAlignment(adminButton, Alignment.TOP_RIGHT);
+        actions.setComponentAlignment(logoutButton, Alignment.TOP_RIGHT);
+        rootLayout.addComponent(actions);
+    }
+
+    private void createContentArea() {
+        contentArea = new CssLayout();
+        contentArea.setSizeFull();
+        rootLayout.addComponent(contentArea);
+        rootLayout.setExpandRatio(contentArea, 1.0f);
+    }
+
     @WebServlet(value = "/*", asyncSupported = true)
     @VaadinServletConfiguration(productionMode = false, ui = MyVaadinUI.class)
     public static class MyServlet extends VaadinCDIServlet {
@@ -167,19 +173,22 @@ public class MyVaadinUI extends UI {
         protected void servletInitialized() throws ServletException {
             super.servletInitialized();
 
-            getService().setSystemMessagesProvider(new SystemMessagesProvider() {
-				@Override
-				public SystemMessages getSystemMessages(SystemMessagesInfo systemMessagesInfo) {
-        			CustomizedSystemMessages messages = new CustomizedSystemMessages();
-    				messages.setSessionExpiredNotificationEnabled(false);
-    				messages.setSessionExpiredURL(null);
-    				messages.setCommunicationErrorNotificationEnabled(false);
-    				messages.setCommunicationErrorURL(null);
-					return messages;
-				}
-            });            
+            getService()
+                    .setSystemMessagesProvider(new SystemMessagesProvider() {
+                        @Override
+                        public SystemMessages getSystemMessages(
+                                SystemMessagesInfo systemMessagesInfo) {
+                            CustomizedSystemMessages messages = new CustomizedSystemMessages();
+                            messages.setSessionExpiredNotificationEnabled(
+                                    false);
+                            messages.setSessionExpiredURL(null);
+                            messages.setCommunicationErrorNotificationEnabled(
+                                    false);
+                            messages.setCommunicationErrorURL(null);
+                            return messages;
+                        }
+                    });
         }
 
     }
-
 }

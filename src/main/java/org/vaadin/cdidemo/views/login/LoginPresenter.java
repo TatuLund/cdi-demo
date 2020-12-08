@@ -21,58 +21,59 @@ import com.vaadin.server.VaadinSession;
 @ViewScoped
 public class LoginPresenter implements Serializable, TimerListener {
 
-	@Inject
-	private Logger logger;
-	
-	@Inject
-	private UserProfileHolder userService;
-	
-	private LoginView view;
+    @Inject
+    private Logger logger;
 
-	@Inject
-	private Event<LoginEvent> loginEvent;
-	
-	@Inject
-	private Event<AlreadyLoggedInEvent> alreadyLoggedEvent;
+    @Inject
+    private UserProfileHolder userService;
 
-	@Inject
-	Beacon beacon;
-	
-	public void setView(LoginView login) {
-		view = login;
-	}
+    private LoginView view;
 
-	public void login(String username, String password) {
-		// Delegate login processing to Session scoped user service
-		logger.info("Session id: "+VaadinSession.getCurrent().getSession().getId());
-		if (userService.passesLogin(username, password)) {
-			DemoUtils.sessionFixation();
-			logger.info("New session id: "+VaadinSession.getCurrent().getSession().getId());
-        	loginEvent.fire(new LoginEvent(username));
-		} else {
-			view.showError("Login failed");
-		}
-	}
+    @Inject
+    private Event<LoginEvent> loginEvent;
 
+    @Inject
+    private Event<AlreadyLoggedInEvent> alreadyLoggedEvent;
 
-	public void handleLoggedIn() {
-		if (userService.getUser() != null) {
-			logger.warn("User is already logged in");
-			alreadyLoggedEvent.fire(new AlreadyLoggedInEvent());
-		}
-	}
+    @Inject
+    Beacon beacon;
 
-	@PostConstruct
-	private void init() {
-		beacon.registerTimerListener(this);
-	}
+    public void setView(LoginView login) {
+        view = login;
+    }
 
-	public void removeTimer() {
-		beacon.unregisterTimerListener(this);
-	}
+    public void login(String username, String password) {
+        // Delegate login processing to Session scoped user service
+        logger.info("Session id: "
+                + VaadinSession.getCurrent().getSession().getId());
+        if (userService.passesLogin(username, password)) {
+            DemoUtils.sessionFixation();
+            logger.info("New session id: "
+                    + VaadinSession.getCurrent().getSession().getId());
+            loginEvent.fire(new LoginEvent(username));
+        } else {
+            view.showError("Login failed");
+        }
+    }
 
-	@Override
-	public void timeStampUpdated(Date timeStamp) {
-		view.setTimeStamp(timeStamp.toString());		
-	}
+    public void handleLoggedIn() {
+        if (userService.getUser() != null) {
+            logger.warn("User is already logged in");
+            alreadyLoggedEvent.fire(new AlreadyLoggedInEvent());
+        }
+    }
+
+    @PostConstruct
+    private void init() {
+        beacon.registerTimerListener(this);
+    }
+
+    public void removeTimer() {
+        beacon.unregisterTimerListener(this);
+    }
+
+    @Override
+    public void timeStampUpdated(Date timeStamp) {
+        view.setTimeStamp(timeStamp.toString());
+    }
 }

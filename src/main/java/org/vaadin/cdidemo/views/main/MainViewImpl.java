@@ -26,83 +26,85 @@ import com.vaadin.ui.themes.ValoTheme;
 @CDIView(MainView.VIEW)
 public class MainViewImpl extends VerticalLayout implements MainView, View {
 
-	@Inject
-	private MainPresenter presenter;
-	
-	@Inject
-	private VersionLabel versionLabel;
-	
-	@Inject
-	private Logger logger;
-	
-	private Label busLabel = new Label("no data");
+    @Inject
+    private MainPresenter presenter;
 
-	private HorizontalLayout container = new HorizontalLayout();
+    @Inject
+    private VersionLabel versionLabel;
 
-	@Inject
-	public MainViewImpl(Logger logger) {
-		logger.info("MainView: Constructor");
-		setSizeFull();
+    @Inject
+    private Logger logger;
 
-		Label label = new Label("main view");
-		label.addStyleName(ValoTheme.LABEL_H1);
-		label.setSizeUndefined();
+    private Label busLabel = new Label("no data");
 
-		busLabel.addStyleName(ValoTheme.LABEL_BOLD);
-		busLabel.setSizeUndefined();
+    private HorizontalLayout container = new HorizontalLayout();
 
-		// Demoing session scoped user management, once logged in 
-		// navigation to main possible in in new UI within same session
-		Button button = new Button("Open");
-		button.setDescription("Click this button to open new main view in an another browser tab");
-		BrowserWindowOpener opener = new BrowserWindowOpener(VaadinServlet.getCurrent().getServletContext().getContextPath());
-		// View parameters can be added directly to URI fragments
-		opener.setUriFragment("!"+MainView.VIEW+"/hello=world");
-		// Query parameters are given with setParameter of BrowserWindowOpener
-		opener.setParameter("print", "true");
-		opener.extend(button);		
-				
-		addComponents(label, button, container, busLabel);
-		setComponentAlignment(label, Alignment.MIDDLE_CENTER);
-		setComponentAlignment(button, Alignment.MIDDLE_CENTER);	
-		setComponentAlignment(container, Alignment.MIDDLE_CENTER);
-		setComponentAlignment(busLabel, Alignment.MIDDLE_CENTER);		
-	}
+    @Inject
+    public MainViewImpl(Logger logger) {
+        logger.info("MainView: Constructor");
+        setSizeFull();
 
-	@PostConstruct
-	public void init() {
-		logger.info("MainView: Post construct");
-		presenter.setView(this);
-		addComponents(versionLabel);
-		setComponentAlignment(versionLabel, Alignment.BOTTOM_RIGHT);		
-	}
-	
-	public void updateBusLabel(String businessData) {
-		busLabel.setValue(businessData);
-	}
-	
-	@Override
-	public void enter(ViewChangeEvent event) {
-		logger.info("MainView: Enter");
-		presenter.handleLoggedIn();
-		// View parameters can be accessed via ViewChangeEvent
-		Map<String, String> params = event.getParameterMap();
-		if (params != null) {
-			for (String key : params.keySet()) {
-				Label label = new Label(key+" = "+params.get(key));
-				container.addComponent(label);
-				container.setComponentAlignment(label, Alignment.MIDDLE_LEFT);
-			}
-		}
-		// Query parameters are handled in UI
-		MyVaadinUI ui = (MyVaadinUI) UI.getCurrent();
-		if (ui.getPrintMode()) {
-			Label label = new Label("Printing");
-			container.addComponent(label);
-			container.setComponentAlignment(label, Alignment.MIDDLE_RIGHT);			
-		}
-		// According to MVP pattern we should not call business logic
-		// in view directly, we delegate to presenter
-		presenter.requestUpdateBusLabel();
-	}
+        Label label = new Label("main view");
+        label.addStyleName(ValoTheme.LABEL_H1);
+        label.setSizeUndefined();
+
+        busLabel.addStyleName(ValoTheme.LABEL_BOLD);
+        busLabel.setSizeUndefined();
+
+        // Demoing session scoped user management, once logged in
+        // navigation to main possible in in new UI within same session
+        Button button = new Button("Open");
+        button.setDescription(
+                "Click this button to open new main view in an another browser tab");
+        BrowserWindowOpener opener = new BrowserWindowOpener(VaadinServlet
+                .getCurrent().getServletContext().getContextPath());
+        // View parameters can be added directly to URI fragments
+        opener.setUriFragment("!" + MainView.VIEW + "/hello=world");
+        // Query parameters are given with setParameter of BrowserWindowOpener
+        opener.setParameter("print", "true");
+        opener.extend(button);
+
+        addComponents(label, button, container, busLabel);
+        setComponentAlignment(label, Alignment.MIDDLE_CENTER);
+        setComponentAlignment(button, Alignment.MIDDLE_CENTER);
+        setComponentAlignment(container, Alignment.MIDDLE_CENTER);
+        setComponentAlignment(busLabel, Alignment.MIDDLE_CENTER);
+    }
+
+    @PostConstruct
+    public void init() {
+        logger.info("MainView: Post construct");
+        presenter.setView(this);
+        addComponents(versionLabel);
+        setComponentAlignment(versionLabel, Alignment.BOTTOM_RIGHT);
+    }
+
+    public void updateBusLabel(String businessData) {
+        busLabel.setValue(businessData);
+    }
+
+    @Override
+    public void enter(ViewChangeEvent event) {
+        logger.info("MainView: Enter");
+        presenter.handleLoggedIn();
+        // View parameters can be accessed via ViewChangeEvent
+        Map<String, String> params = event.getParameterMap();
+        if (params != null) {
+            for (String key : params.keySet()) {
+                Label label = new Label(key + " = " + params.get(key));
+                container.addComponent(label);
+                container.setComponentAlignment(label, Alignment.MIDDLE_LEFT);
+            }
+        }
+        // Query parameters are handled in UI
+        MyVaadinUI ui = (MyVaadinUI) UI.getCurrent();
+        if (ui.getPrintMode()) {
+            Label label = new Label("Printing");
+            container.addComponent(label);
+            container.setComponentAlignment(label, Alignment.MIDDLE_RIGHT);
+        }
+        // According to MVP pattern we should not call business logic
+        // in view directly, we delegate to presenter
+        presenter.requestUpdateBusLabel();
+    }
 }

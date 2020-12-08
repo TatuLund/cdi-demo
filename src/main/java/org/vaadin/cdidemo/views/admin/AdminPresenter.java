@@ -20,47 +20,49 @@ import com.vaadin.cdi.CDINavigator;
 
 public class AdminPresenter implements Serializable {
 
-	@Inject
-	private Logger logger;
-	
-	@Inject
-	private UserProfileHolder userService;
-	
-	@Inject
-	private Event<NotLoggedInEvent> event;
+    @Inject
+    private Logger logger;
 
-	@Inject 
-	private UserListService userList;
+    @Inject
+    private UserProfileHolder userService;
 
-	@Inject
-	private CDINavigator nav;
-	
-	private AdminView view;
+    @Inject
+    private Event<NotLoggedInEvent> event;
 
-	// Executor is injected with @Resource annotation instead of @Inject
-	@Resource
-	ManagedExecutorService executor;
-	
-	public void setView(AdminView adminView) {
-		view = adminView;
-	}
+    @Inject
+    private UserListService userList;
 
-	public void requestUpdateUsers() {
-		// Since database calls may take long, they should be done async using
-		// Executors for threading and futures.
-		final CompletableFuture<Stream<User>> future = CompletableFuture.supplyAsync(() -> userList.getUsers(),executor);
-		future.thenAccept(users -> {
-			view.updateUsers(users);
-		});
-	}
-	
-	public void handlePrivilegesAndLoggedIn() {
-		if (userService.getUser() != null && !userService.isAdmin()) {
-			logger.warn("User does not have admin privileges: "+userService.getUser().getName());
-			nav.navigateTo(MainView.VIEW);
-		} else if (userService.getUser() == null) {
-			logger.warn("User is not logged in");
-			event.fire(new NotLoggedInEvent());
-		}
-	}	
+    @Inject
+    private CDINavigator nav;
+
+    private AdminView view;
+
+    // Executor is injected with @Resource annotation instead of @Inject
+    @Resource
+    ManagedExecutorService executor;
+
+    public void setView(AdminView adminView) {
+        view = adminView;
+    }
+
+    public void requestUpdateUsers() {
+        // Since database calls may take long, they should be done async using
+        // Executors for threading and futures.
+        final CompletableFuture<Stream<User>> future = CompletableFuture
+                .supplyAsync(() -> userList.getUsers(), executor);
+        future.thenAccept(users -> {
+            view.updateUsers(users);
+        });
+    }
+
+    public void handlePrivilegesAndLoggedIn() {
+        if (userService.getUser() != null && !userService.isAdmin()) {
+            logger.warn("User does not have admin privileges: "
+                    + userService.getUser().getName());
+            nav.navigateTo(MainView.VIEW);
+        } else if (userService.getUser() == null) {
+            logger.warn("User is not logged in");
+            event.fire(new NotLoggedInEvent());
+        }
+    }
 }

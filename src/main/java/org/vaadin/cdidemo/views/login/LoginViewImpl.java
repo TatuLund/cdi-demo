@@ -28,78 +28,80 @@ import com.vaadin.ui.themes.ValoTheme;
 @CDIView(LoginView.VIEW)
 public class LoginViewImpl extends VerticalLayout implements LoginView, View {
 
-	@Inject
-	private LoginPresenter presenter;
+    @Inject
+    private LoginPresenter presenter;
 
-	@Inject
-	VersionLabel label;
-	
-	@Inject
-	Logger logger;
-	
-	Label timeStampLabel = new Label(new Date().toString());
+    @Inject
+    VersionLabel label;
 
-	public LoginViewImpl() {
+    @Inject
+    Logger logger;
 
-		setSizeFull();
+    Label timeStampLabel = new Label(new Date().toString());
 
-		timeStampLabel.addStyleName(ValoTheme.LABEL_SMALL);
+    public LoginViewImpl() {
 
-		final FormLayout form = new FormLayout();
-		form.setSizeUndefined();
-		addComponents(timeStampLabel,form);
-		setComponentAlignment(form, Alignment.MIDDLE_CENTER);
-		setComponentAlignment(timeStampLabel, Alignment.MIDDLE_CENTER);
+        setSizeFull();
 
-		final TextField name = new TextField("Username");
-		form.addComponent(name);
+        timeStampLabel.addStyleName(ValoTheme.LABEL_SMALL);
 
-		final PasswordField password = new PasswordField("Password");
-		form.addComponent(password);
+        final FormLayout form = new FormLayout();
+        form.setSizeUndefined();
+        addComponents(timeStampLabel, form);
+        setComponentAlignment(form, Alignment.MIDDLE_CENTER);
+        setComponentAlignment(timeStampLabel, Alignment.MIDDLE_CENTER);
 
-		final Button login = new Button("Login");
-		login.addStyleName(ValoTheme.BUTTON_PRIMARY);
-		login.setClickShortcut(KeyCode.ENTER);
-		form.addComponent(login);
-		// Delegate login processing to presenter
-		login.addClickListener(event -> presenter.login(name.getValue(), password.getValue()));
-	}
+        final TextField name = new TextField("Username");
+        form.addComponent(name);
 
-	@PostConstruct
-	private void init() {
-		presenter.setView(this);
-		// Version label is UIScoped, so this change is shown also on MainView
-		// Injected components are not available in constructor, hence you need
-		// to add them in PostContruct method
-		label.setValue("version 1.0");
-		addComponents(label);
-		setComponentAlignment(label, Alignment.BOTTOM_RIGHT);
-	}
+        final PasswordField password = new PasswordField("Password");
+        form.addComponent(password);
 
-	@Override
-	public void showError(String error) {
-		Notification.show(error, Type.ERROR_MESSAGE);
-	}
+        final Button login = new Button("Login");
+        login.addStyleName(ValoTheme.BUTTON_PRIMARY);
+        login.setClickShortcut(KeyCode.ENTER);
+        form.addComponent(login);
+        // Delegate login processing to presenter
+        login.addClickListener(
+                event -> presenter.login(name.getValue(), password.getValue()));
+    }
 
-	@Override
-	public void enter(ViewChangeEvent event) {
-		presenter.handleLoggedIn();
-	}
+    @PostConstruct
+    private void init() {
+        presenter.setView(this);
+        // Version label is UIScoped, so this change is shown also on MainView
+        // Injected components are not available in constructor, hence you need
+        // to add them in PostContruct method
+        label.setValue("version 1.0");
+        addComponents(label);
+        setComponentAlignment(label, Alignment.BOTTOM_RIGHT);
+    }
 
-	@Override
-	public void setTimeStamp(String timeStamp) {
-		try {
-			getUI().access(() -> {
-				timeStampLabel.setValue(timeStamp);
-			});
-		} catch (UIDetachedException e) {
-			logger.info("Timer event received, but time stamp not updated as UI was closed");
-		}
-	}
+    @Override
+    public void showError(String error) {
+        Notification.show(error, Type.ERROR_MESSAGE);
+    }
 
-	@Override
-	public void detach() {
-		presenter.removeTimer();
-		super.detach();
-	}
+    @Override
+    public void enter(ViewChangeEvent event) {
+        presenter.handleLoggedIn();
+    }
+
+    @Override
+    public void setTimeStamp(String timeStamp) {
+        try {
+            getUI().access(() -> {
+                timeStampLabel.setValue(timeStamp);
+            });
+        } catch (UIDetachedException e) {
+            logger.info(
+                    "Timer event received, but time stamp not updated as UI was closed");
+        }
+    }
+
+    @Override
+    public void detach() {
+        presenter.removeTimer();
+        super.detach();
+    }
 }

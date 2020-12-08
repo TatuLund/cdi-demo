@@ -6,11 +6,12 @@ import com.vaadin.ui.UI;
 
 public class DemoUtils {
 
-	public static void sessionFixation() {
-		// Chrome 80 does not support synchronous XHR during page dismissal anymore
-		// thus Push needs to be disabled during session re-initialization
-		UI.getCurrent().getPushConfiguration().setPushMode(PushMode.DISABLED);
-		VaadinService.reinitializeSession(VaadinService.getCurrentRequest());
-		UI.getCurrent().getPushConfiguration().setPushMode(PushMode.AUTOMATIC);
-	}	
+    public static void sessionFixation() {
+        // Chrome 80 does not support synchronous XHR during page dismissal
+        // anymore
+        // thus Push needs to be disabled during session re-initialization
+        UI.getCurrent().getPushConfiguration().setPushMode(PushMode.DISABLED);
+        VaadinService.reinitializeSession(VaadinService.getCurrentRequest());
+        UI.getCurrent().getPushConfiguration().setPushMode(PushMode.AUTOMATIC);
+    }
 }

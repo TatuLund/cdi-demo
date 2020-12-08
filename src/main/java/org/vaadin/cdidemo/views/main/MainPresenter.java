@@ -15,33 +15,33 @@ import com.vaadin.cdi.ViewScoped;
 @ViewScoped
 public class MainPresenter implements Serializable {
 
-	@Inject
-	private Logger logger;
-	
-	@Inject
-	private UserProfileHolder userService;
+    @Inject
+    private Logger logger;
 
-	@Inject
-	private Event<NotLoggedInEvent> event;
-	
-	@Inject
-	private BusinessBean businessBean;
-	
-	private MainView view;
-	
-	public void setView(MainView main) {
-		view = main;
-	}
+    @Inject
+    private UserProfileHolder userService;
 
-	public void requestUpdateBusLabel() {
-		view.updateBusLabel(businessBean.getBusinessData());
-	}
-	
-	public void handleLoggedIn() {
-		if (userService.getUser() == null) {
-			logger.warn("User is not logged in");
-			event.fire(new NotLoggedInEvent());
-		}
-	}
+    @Inject
+    private Event<NotLoggedInEvent> event;
+
+    @Inject
+    private BusinessBean businessBean;
+
+    private MainView view;
+
+    public void setView(MainView main) {
+        view = main;
+    }
+
+    public void requestUpdateBusLabel() {
+        view.updateBusLabel(businessBean.getBusinessData());
+    }
+
+    public void handleLoggedIn() {
+        if (userService.getUser() == null) {
+            logger.warn("User is not logged in");
+            event.fire(new NotLoggedInEvent());
+        }
+    }
 
 }

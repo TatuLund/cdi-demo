@@ -5,10 +5,10 @@ import java.util.stream.Stream;
 
 public interface UserListService {
 
-	Optional<User> getUser(String username);
+    Optional<User> getUser(String username);
 
-	Stream<User> getUsers();
+    Stream<User> getUsers();
 
-	Stream<User> getAdmins();
-	
+    Stream<User> getAdmins();
+
 }

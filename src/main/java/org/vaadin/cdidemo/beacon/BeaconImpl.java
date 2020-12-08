@@ -18,63 +18,65 @@ import org.slf4j.Logger;
 @ApplicationScoped
 public class BeaconImpl implements Beacon, Serializable {
 
-	@Inject
-	private Logger logger;
+    @Inject
+    private Logger logger;
 
-	@Resource
-	ManagedExecutorService executor;
+    @Resource
+    ManagedExecutorService executor;
 
-	private int interval = 10;
+    private int interval = 10;
 
-	/**
-	 * It is <em>VERY IMPORTANT</em> we use a weak hash map when registering
-	 * Vaadin components. Without it, this class would keep references to the UI
-	 * objects forever, causing a massive memory leak.
-	 */
-	private final WeakHashMap<TimerListener, Object> listeners = new WeakHashMap<>();
+    /**
+     * It is <em>VERY IMPORTANT</em> we use a weak hash map when registering
+     * Vaadin components. Without it, this class would keep references to the UI
+     * objects forever, causing a massive memory leak.
+     */
+    private final WeakHashMap<TimerListener, Object> listeners = new WeakHashMap<>();
 
-	private Future<?> timerFuture;
+    private Future<?> timerFuture;
 
-	public BeaconImpl() {
-	}
+    public BeaconImpl() {
+    }
 
-	private void postTime() {
-		Date date;
-		while (true) {
-			try {
-				Thread.sleep(interval * 1000);
-			} catch (InterruptedException e) {
-				logger.error("Timer thread interrupted");
-			}
-			date = new Date();
-			listeners.forEach((listener, o) -> listener.timeStampUpdated(new Date()));
-		}
+    private void postTime() {
+        Date date;
+        while (true) {
+            try {
+                Thread.sleep(interval * 1000);
+            } catch (InterruptedException e) {
+                logger.error("Timer thread interrupted");
+            }
+            date = new Date();
+            listeners.forEach(
+                    (listener, o) -> listener.timeStampUpdated(new Date()));
+        }
 
-	}
+    }
 
-	public void registerTimerListener(TimerListener listener) {
-		synchronized (listeners) {
-			listeners.put(listener, null);
+    public void registerTimerListener(TimerListener listener) {
+        synchronized (listeners) {
+            listeners.put(listener, null);
 
-			// If the thread isn't running, start a new one.
-			if (timerFuture == null || timerFuture.isDone() || timerFuture.isCancelled()) {
-				timerFuture = executor.submit(this::postTime);
-				logger.info("Timer started");
-			}
-		}
-	}
+            // If the thread isn't running, start a new one.
+            if (timerFuture == null || timerFuture.isDone()
+                    || timerFuture.isCancelled()) {
+                timerFuture = executor.submit(this::postTime);
+                logger.info("Timer started");
+            }
+        }
+    }
 
-	public void unregisterTimerListener(TimerListener listener) {
-		synchronized (listeners) {
-			listeners.remove(listener);
+    public void unregisterTimerListener(TimerListener listener) {
+        synchronized (listeners) {
+            listeners.remove(listener);
 
-			// if there are no listeners, stop the thread
-			if (listeners.isEmpty() && timerFuture != null) {
-				timerFuture.cancel(true);
-				timerFuture = null;
-				logger.info("Timer stopped");
-			}
-		}
-	}
-	
+            // if there are no listeners, stop the thread
+            if (listeners.isEmpty() && timerFuture != null) {
+                timerFuture.cancel(true);
+                timerFuture = null;
+                logger.info("Timer stopped");
+            }
+        }
+    }
+
 }

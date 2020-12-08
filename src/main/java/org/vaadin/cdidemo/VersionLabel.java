@@ -11,9 +11,10 @@ import com.vaadin.ui.themes.ValoTheme;
 @UIScoped
 public class VersionLabel extends Label {
 
-	public VersionLabel() {
-		super("version 0.0");
-		setDescription("This label is UI scoped, the setting version in login view is visible also main view");
-		this.addStyleName(ValoTheme.LABEL_BOLD);
-	}
+    public VersionLabel() {
+        super("version 0.0");
+        setDescription(
+                "This label is UI scoped, the setting version in login view is visible also main view");
+        this.addStyleName(ValoTheme.LABEL_BOLD);
+    }
 }

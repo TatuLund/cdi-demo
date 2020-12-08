@@ -2,12 +2,12 @@ package org.vaadin.cdidemo.data;
 
 public interface UserProfileHolder {
 
-	User getUser();
+    User getUser();
 
-	boolean isAdmin();
+    boolean isAdmin();
 
-	void logout();
+    void logout();
 
-	boolean passesLogin(String username, String password);
+    boolean passesLogin(String username, String password);
 
 }
