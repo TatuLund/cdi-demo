@@ -167,11 +167,16 @@ public class MyVaadinUI extends UI {
     }
 
     @WebServlet(value = "/*", asyncSupported = true)
-    @VaadinServletConfiguration(productionMode = false, ui = MyVaadinUI.class)
+    @VaadinServletConfiguration(productionMode = false, ui = MyVaadinUI.class, closeIdleSessions = true, heartbeatInterval = 120)
+    // With CDI one needs to extend VaadinCDIServlet instead of VaadinServlet
     public static class MyServlet extends VaadinCDIServlet {
         @Override
         protected void servletInitialized() throws ServletException {
             super.servletInitialized();
+
+            getService().addSessionInitListener(event -> {
+                event.getSession().getSession().setMaxInactiveInterval(600);
+            });
 
             getService()
                     .setSystemMessagesProvider(new SystemMessagesProvider() {
