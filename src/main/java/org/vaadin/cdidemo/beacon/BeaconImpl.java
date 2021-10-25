@@ -2,17 +2,14 @@ package org.vaadin.cdidemo.beacon;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 import java.util.WeakHashMap;
 import java.util.concurrent.Future;
 
-import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.enterprise.concurrent.ManagedExecutorService;
-import javax.enterprise.event.Event;
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
-import org.atmosphere.inject.annotation.ApplicationScoped;
 import org.slf4j.Logger;
 
 @ApplicationScoped

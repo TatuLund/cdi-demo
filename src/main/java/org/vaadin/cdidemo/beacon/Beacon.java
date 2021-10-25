@@ -7,7 +7,7 @@ public interface Beacon {
     public interface TimerListener {
         public void timeStampUpdated(Date dateTimeStamp);
     }
-
+  
     void registerTimerListener(TimerListener listener);
 
     void unregisterTimerListener(TimerListener listener);

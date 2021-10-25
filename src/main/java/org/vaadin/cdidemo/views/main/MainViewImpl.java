@@ -18,6 +18,7 @@ import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.Notification;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
@@ -39,6 +40,8 @@ public class MainViewImpl extends VerticalLayout implements MainView, View {
 
     private HorizontalLayout container = new HorizontalLayout();
 
+    private MyVaadinUI ui;
+
     @Inject
     public MainViewImpl(Logger logger) {
         logger.info("MainView: Constructor");
@@ -57,7 +60,7 @@ public class MainViewImpl extends VerticalLayout implements MainView, View {
         button.setDescription(
                 "Click this button to open new main view in an another browser tab");
         BrowserWindowOpener opener = new BrowserWindowOpener(VaadinServlet
-                .getCurrent().getServletContext().getContextPath());
+                .getCurrent().getServletContext().getContextPath()+"/ui");
         // View parameters can be added directly to URI fragments
         opener.setUriFragment("!" + MainView.VIEW + "/hello=world");
         // Query parameters are given with setParameter of BrowserWindowOpener
@@ -97,7 +100,7 @@ public class MainViewImpl extends VerticalLayout implements MainView, View {
             }
         }
         // Query parameters are handled in UI
-        MyVaadinUI ui = (MyVaadinUI) UI.getCurrent();
+        ui = (MyVaadinUI) UI.getCurrent();
         if (ui.getPrintMode()) {
             Label label = new Label("Printing");
             container.addComponent(label);
@@ -106,5 +109,23 @@ public class MainViewImpl extends VerticalLayout implements MainView, View {
         // According to MVP pattern we should not call business logic
         // in view directly, we delegate to presenter
         presenter.requestUpdateBusLabel();
+    }
+
+    @Override
+    public void showMessage(String message) {
+        String mes = message == null ? "" : message;
+        try {
+            ui.access(() -> {
+                Notification.show("REST: " + mes);
+            });
+        } catch (NullPointerException e) {
+            logger.info("No UI "+mes);
+        }
+    }
+
+    @Override
+    public void detach() {
+        presenter.removeEventBusListener();
+        super.detach();
     }
 }

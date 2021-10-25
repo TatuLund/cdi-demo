@@ -45,7 +45,7 @@ import com.vaadin.ui.themes.ValoTheme;
 @Theme("valo")
 @SuppressWarnings("serial")
 @PreserveOnRefresh
-@Push(transport = Transport.WEBSOCKET_XHR)
+@Push(transport = Transport.LONG_POLLING)
 @CDIUI("")
 public class MyVaadinUI extends UI {
 
@@ -166,7 +166,7 @@ public class MyVaadinUI extends UI {
         rootLayout.setExpandRatio(contentArea, 1.0f);
     }
 
-    @WebServlet(value = "/*", asyncSupported = true)
+    @WebServlet(value = { "/ui/*", "/VAADIN/*" }, asyncSupported = true)
     @VaadinServletConfiguration(productionMode = false, ui = MyVaadinUI.class, closeIdleSessions = true, heartbeatInterval = 120)
     // With CDI one needs to extend VaadinCDIServlet instead of VaadinServlet
     public static class MyServlet extends VaadinCDIServlet {

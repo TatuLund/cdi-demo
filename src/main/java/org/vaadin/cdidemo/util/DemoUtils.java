@@ -21,7 +21,7 @@ public class DemoUtils {
         VaadinServletRequest request = (VaadinServletRequest) VaadinService
                 .getCurrentRequest();
         request.getHttpServletRequest().changeSessionId();
-        // With Java EE 7 one needs to use
+        // With Java EE 7
         // VaadinService.reinitializeSession(VaadinService.getCurrentRequest());
         // But works only with WEBSOCKET_XHR
         UI.getCurrent().getPushConfiguration().setPushMode(PushMode.AUTOMATIC);

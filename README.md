@@ -5,6 +5,14 @@ There are number of CDI use cases demonstrated in this app, some of them are gen
 
 The views are implemented using MVP (Model View Presenter) pattern
 
+Start the app using
+
+wildfly:run
+
+Then open it in the browser
+
+http://localhost:8080/javaee-demo-1.0-SNAPSHOT/ui
+
 Here is a brief summary what you can find here
 
 - LoggerProducer:
@@ -17,6 +25,7 @@ Here is a brief summary what you can find here
   - Extending VaadinCDIServlet and setting SessionExpired error not to show
     and directly refresh the UI to login
   - Parse query parameters
+  - Deploys to context "ui"
 
 - VersionLabel: Shared UIScoped component used by multiple views
 
@@ -37,10 +46,24 @@ Here is a brief summary what you can find here
   - Access control
   - Opening new browser tab with BrowserWindowOpener (demoing VaadinSessionScoped user enitity)
   - Demoing passing query and view parameters
+  - Receive event posted from REST endpoint
  
  - LoginView
    - Simple login example
    - Using UIScoped (VersionLabel) bean
-  
+   - Listen the timestamp from Beacon
+ 
+ - EventBus
+   - Super simple singleton event bus to broadcast messages
+   - See DemoEndpoint and MainView
+ 
  - DemoUtils
    - Proper way of session fixation protection used in login process
+
+ - DemoEndpoint
+   - Simple REST end point with GET method that posts the message to EventBus
+   - Use "http://localhost:8080/javaee-demo-1.0-SNAPSHOT/rest/hello/message" to demo
+ 
+ - Beacon
+   - Utility that broadcasts timestamp
+   
