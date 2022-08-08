@@ -39,8 +39,7 @@ public class AdminViewImpl extends VerticalLayout implements AdminView, View {
     @PostConstruct
     private void init() {
         presenter.setView(this);
-        // Ask presenter to start process of updating user list
-        presenter.requestUpdateUsers();
+
         userContainer.setSizeFull();
         Label loading = new Label();
         loading.setStyleName(ValoTheme.LABEL_SPINNER);
@@ -72,5 +71,7 @@ public class AdminViewImpl extends VerticalLayout implements AdminView, View {
     @Override
     public void enter(ViewChangeEvent event) {
         presenter.handlePrivilegesAndLoggedIn();
+        // Ask presenter to start process of updating user list
+        presenter.requestUpdateUsers();
     }
 }
