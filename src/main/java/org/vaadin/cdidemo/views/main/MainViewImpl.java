@@ -8,6 +8,7 @@ import javax.inject.Inject;
 import org.slf4j.Logger;
 import org.vaadin.cdidemo.MyVaadinUI;
 import org.vaadin.cdidemo.VersionLabel;
+import org.vaadin.cdidemo.data.SessionBean;
 
 import com.vaadin.cdi.CDIView;
 import com.vaadin.navigator.View;
@@ -19,6 +20,7 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
+import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
@@ -43,7 +45,7 @@ public class MainViewImpl extends VerticalLayout implements MainView, View {
     private MyVaadinUI ui;
 
     @Inject
-    public MainViewImpl(Logger logger) {
+    public MainViewImpl(Logger logger, SessionBean data) {
         logger.info("MainView: Constructor");
         setSizeFull();
 
@@ -54,24 +56,34 @@ public class MainViewImpl extends VerticalLayout implements MainView, View {
         busLabel.addStyleName(ValoTheme.LABEL_BOLD);
         busLabel.setSizeUndefined();
 
+        TextField sessionData = new TextField("Session data");
+        sessionData.setValue(data.getText());
+        sessionData.addValueChangeListener(event -> {
+            if (event.isUserOriginated()) {
+                data.setText(event.getValue());
+            }
+        });
+
         // Demoing session scoped user management, once logged in
         // navigation to main possible in in new UI within same session
         Button button = new Button("Open");
         button.setDescription(
                 "Click this button to open new main view in an another browser tab");
-        BrowserWindowOpener opener = new BrowserWindowOpener(VaadinServlet
-                .getCurrent().getServletContext().getContextPath()+"/ui");
+        BrowserWindowOpener opener = new BrowserWindowOpener(
+                VaadinServlet.getCurrent().getServletContext().getContextPath()
+                        + "/ui");
         // View parameters can be added directly to URI fragments
         opener.setUriFragment("!" + MainView.VIEW + "/hello=world");
         // Query parameters are given with setParameter of BrowserWindowOpener
         opener.setParameter("print", "true");
         opener.extend(button);
 
-        addComponents(label, button, container, busLabel);
+        addComponents(label, button, container, sessionData, busLabel);
         setComponentAlignment(label, Alignment.MIDDLE_CENTER);
         setComponentAlignment(button, Alignment.MIDDLE_CENTER);
         setComponentAlignment(container, Alignment.MIDDLE_CENTER);
         setComponentAlignment(busLabel, Alignment.MIDDLE_CENTER);
+        setComponentAlignment(sessionData, Alignment.MIDDLE_CENTER);
     }
 
     @PostConstruct
@@ -119,7 +131,7 @@ public class MainViewImpl extends VerticalLayout implements MainView, View {
                 Notification.show("REST: " + mes);
             });
         } catch (NullPointerException e) {
-            logger.info("No UI "+mes);
+            logger.info("No UI " + mes);
         }
     }
 

@@ -3,6 +3,7 @@ package org.vaadin.cdidemo.eventbus;
 import java.io.Serializable;
 import java.util.WeakHashMap;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
@@ -13,8 +14,7 @@ import org.slf4j.Logger;
  * Super simple event bus to be used with CDI, e.g. as application scoped
  * broadcaster.
  */
-@Named
-@Singleton
+@ApplicationScoped
 public class EventBusImpl implements EventBus, Serializable {
 
     @Inject

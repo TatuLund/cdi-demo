@@ -9,6 +9,7 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 
 import org.slf4j.Logger;
+import org.vaadin.cdidemo.data.SessionBean;
 import org.vaadin.cdidemo.data.UserProfileHolder;
 import org.vaadin.cdidemo.events.AlreadyLoggedInEvent;
 import org.vaadin.cdidemo.events.LoginEvent;
@@ -24,6 +25,7 @@ import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.cdi.CDINavigator;
 import com.vaadin.cdi.CDIUI;
 import com.vaadin.cdi.server.VaadinCDIServlet;
+import com.vaadin.data.provider.DataCommunicator;
 import com.vaadin.server.CustomizedSystemMessages;
 import com.vaadin.server.Page;
 import com.vaadin.server.SystemMessages;
@@ -38,6 +40,7 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Notification;
+import com.vaadin.ui.TwinColSelect;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
@@ -51,6 +54,9 @@ public class MyVaadinUI extends UI {
 
     @Inject
     private Logger logger;
+
+    @Inject
+    private SessionBean sessionData;
 
     @Inject
     private UserProfileHolder userService;
@@ -95,6 +101,11 @@ public class MyVaadinUI extends UI {
         } else {
             nav.navigateTo(LoginView.VIEW);
         }
+    }
+
+    @Override
+    public void refresh(VaadinRequest request) {
+        Notification.show("Refreshed: " + sessionData.getText());
     }
 
     @PostConstruct
