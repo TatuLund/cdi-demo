@@ -3,7 +3,7 @@ package org.vaadin.cdidemo.data;
 import java.io.Serializable;
 import java.util.Objects;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.slf4j.Logger;
 
@@ -44,11 +44,13 @@ public class UserProfileHolderImpl implements UserProfileHolder, Serializable {
 
     @Override
     public void logout() {
-        logger.info("User logout: " + loggedUser.getName());
+        if (loggedUser != null) {
+            logger.info("User logout: " + loggedUser.getName());
+        }
         loggedUser = null;
         // This is one of the preferred ways to log out and terminate
         // VaadinSession
-        VaadinSession.getCurrent().getSession().invalidate();
+        VaadinSession.getCurrent().close();
     }
 
     @Override

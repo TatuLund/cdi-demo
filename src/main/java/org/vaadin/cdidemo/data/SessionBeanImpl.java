@@ -2,7 +2,7 @@ package org.vaadin.cdidemo.data;
 
 import java.io.Serializable;
 
-import javax.enterprise.context.SessionScoped;
+import jakarta.enterprise.context.SessionScoped;
 
 @SessionScoped
 public class SessionBeanImpl implements Serializable, SessionBean {

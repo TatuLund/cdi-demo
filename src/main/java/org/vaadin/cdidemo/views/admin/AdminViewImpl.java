@@ -2,8 +2,8 @@ package org.vaadin.cdidemo.views.admin;
 
 import java.util.stream.Stream;
 
-import javax.annotation.PostConstruct;
-import javax.inject.Inject;
+import jakarta.annotation.PostConstruct;
+import jakarta.inject.Inject;
 
 import org.slf4j.Logger;
 import org.vaadin.cdidemo.VersionLabel;

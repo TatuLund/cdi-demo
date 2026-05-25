@@ -2,11 +2,11 @@ package org.vaadin.cdidemo;
 
 import java.util.Map;
 
-import javax.annotation.PostConstruct;
-import javax.enterprise.event.Observes;
-import javax.inject.Inject;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
+import jakarta.annotation.PostConstruct;
+import jakarta.enterprise.event.Observes;
+import jakarta.inject.Inject;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
 
 import org.slf4j.Logger;
 import org.vaadin.cdidemo.data.SessionBean;
@@ -25,7 +25,6 @@ import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.cdi.CDINavigator;
 import com.vaadin.cdi.CDIUI;
 import com.vaadin.cdi.server.VaadinCDIServlet;
-import com.vaadin.data.provider.DataCommunicator;
 import com.vaadin.server.CustomizedSystemMessages;
 import com.vaadin.server.Page;
 import com.vaadin.server.SystemMessages;
@@ -40,7 +39,6 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Notification;
-import com.vaadin.ui.TwinColSelect;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
