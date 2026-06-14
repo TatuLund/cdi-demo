@@ -2,9 +2,8 @@ package org.vaadin.cdidemo.views.main;
 
 import java.io.Serializable;
 
-import javax.enterprise.event.Event;
-import javax.enterprise.event.Observes;
-import javax.inject.Inject;
+import jakarta.enterprise.event.Event;
+import jakarta.inject.Inject;
 
 import org.slf4j.Logger;
 import org.vaadin.cdidemo.data.BusinessBean;

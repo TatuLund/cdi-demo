@@ -4,10 +4,10 @@ import java.io.Serializable;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Stream;
 
-import javax.annotation.Resource;
-import javax.enterprise.concurrent.ManagedExecutorService;
-import javax.enterprise.event.Event;
-import javax.inject.Inject;
+import jakarta.annotation.Resource;
+import jakarta.enterprise.concurrent.ManagedExecutorService;
+import jakarta.enterprise.event.Event;
+import jakarta.inject.Inject;
 
 import org.slf4j.Logger;
 import org.vaadin.cdidemo.data.User;

@@ -1,17 +1,15 @@
 package org.vaadin.cdidemo;
 
-import javax.enterprise.inject.Produces;
-import javax.enterprise.inject.spi.InjectionPoint;
-import javax.inject.Named;
-import javax.inject.Singleton;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.inject.Produces;
+import jakarta.enterprise.inject.spi.InjectionPoint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 // Example of Producer, Logger does not have non-parameter constructor. We will get
 // the class name needed for the constructor via InjectionPoint that gives info
 // about Bean where we are injecting to 
-@Named
-@Singleton
+@ApplicationScoped
 public class LoggerProducer {
 
     @Produces
