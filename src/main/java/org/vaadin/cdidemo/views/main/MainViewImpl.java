@@ -1,9 +1,7 @@
 package org.vaadin.cdidemo.views.main;
 
-import java.util.Map;
-
-import javax.annotation.PostConstruct;
-import javax.inject.Inject;
+import jakarta.annotation.PostConstruct;
+import jakarta.inject.Inject;
 
 import org.slf4j.Logger;
 import org.vaadin.cdidemo.MyVaadinUI;
@@ -59,9 +57,7 @@ public class MainViewImpl extends VerticalLayout implements MainView, View {
         TextField sessionData = new TextField("Session data");
         sessionData.setValue(data.getText());
         sessionData.addValueChangeListener(event -> {
-            if (event.isUserOriginated()) {
-                data.setText(event.getValue());
-            }
+            data.setText(event.getProperty().getValue().toString());
         });
 
         // Demoing session scoped user management, once logged in
@@ -102,15 +98,17 @@ public class MainViewImpl extends VerticalLayout implements MainView, View {
     public void enter(ViewChangeEvent event) {
         logger.info("MainView: Enter");
         presenter.handleLoggedIn();
-        // View parameters can be accessed via ViewChangeEvent
-        Map<String, String> params = event.getParameterMap();
-        if (params != null) {
-            for (String key : params.keySet()) {
-                Label label = new Label(key + " = " + params.get(key));
-                container.addComponent(label);
-                container.setComponentAlignment(label, Alignment.MIDDLE_LEFT);
-            }
-        }
+        
+        //// View parameters can be accessed via ViewChangeEvent
+        //Map<String, String> params = event.getParameterMap();
+        //if (params != null) {
+        //    for (String key : params.keySet()) {
+        //        Label label = new Label(key + " = " + params.get(key));
+        //        container.addComponent(label);
+        //        container.setComponentAlignment(label, Alignment.MIDDLE_LEFT);
+        //    }
+        //}
+
         // Query parameters are handled in UI
         ui = (MyVaadinUI) UI.getCurrent();
         if (ui.getPrintMode()) {

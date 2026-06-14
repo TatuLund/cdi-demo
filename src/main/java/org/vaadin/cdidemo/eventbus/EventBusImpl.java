@@ -3,10 +3,8 @@ package org.vaadin.cdidemo.eventbus;
 import java.io.Serializable;
 import java.util.WeakHashMap;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.inject.Singleton;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 
 import org.slf4j.Logger;
 

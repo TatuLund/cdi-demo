@@ -5,31 +5,24 @@
 	<groupId>com.vaadin.training</groupId>
 	<artifactId>javaee-demo</artifactId>
 	<packaging>war</packaging>
-	<name>Vaadin Web Application</name>
+	<name>Vaadin CDI Demo for Vaadin 7 EM with Jakarta</name>
 	<version>1.0-SNAPSHOT</version>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<vaadin.version>8.27.2</vaadin.version>
+		<vaadin.version>7.7.52</vaadin.version>
 		<vaadin.plugin.version>${vaadin.version}</vaadin.plugin.version>
-		<project.source.version>1.8</project.source.version>
-		<project.target.version>1.8</project.target.version>
+		<vaadin.cdi.version>1.9-SNAPSHOT</vaadin.cdi.version>
+		<project.source.version>21</project.source.version>
+		<project.target.version>21</project.target.version>
 		<project.encoding>UTF-8</project.encoding>
-		<vaadin.widgetset.mode>cdn</vaadin.widgetset.mode>
 	</properties>
 
 	<!-- Define repositories used in projects -->
 	<repositories>
 		<repository>
-			<id>vaadin-addons</id>
-			<url>http://maven.vaadin.com/vaadin-addons</url>
-		</repository>
-		<repository>
-			<id>vaadin-snapshots</id>
-			<url>http://oss.sonatype.org/content/repositories/vaadin-snapshots/</url>
-			<releases>
-				<enabled>false</enabled>
-			</releases>
+			<id>vaadin-prereleases</id>
+			<url>https://maven.vaadin.com/vaadin-prereleases</url>
 			<snapshots>
 				<enabled>true</enabled>
 			</snapshots>
@@ -37,11 +30,8 @@
 	</repositories>
 	<pluginRepositories>
 		<pluginRepository>
-			<id>vaadin-snapshots</id>
-			<url>http://oss.sonatype.org/content/repositories/vaadin-snapshots/</url>
-			<releases>
-				<enabled>false</enabled>
-			</releases>
+			<id>vaadin-prereleases</id>
+			<url>https://maven.vaadin.com/vaadin-prereleases</url>
 			<snapshots>
 				<enabled>true</enabled>
 			</snapshots>
@@ -63,16 +53,15 @@
 	<dependencies>
 		<dependency>
 			<groupId>com.vaadin</groupId>
-			<artifactId>vaadin-server</artifactId>
+			<artifactId>vaadin-server-mpr-jakarta</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>com.vaadin</groupId>
 			<artifactId>vaadin-client-compiled</artifactId>
-			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.vaadin</groupId>
-			<artifactId>vaadin-push</artifactId>
+			<artifactId>vaadin-push-jakarta</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>com.vaadin</groupId>
@@ -91,20 +80,20 @@
 		<dependency>
 			<groupId>com.vaadin</groupId>
 			<artifactId>vaadin-cdi</artifactId>
+			<version>${vaadin.cdi.version}</version>
 		</dependency>
 
-		<!-- Use official artifacts from https://wikis.oracle.com/display/GlassFish/Java+EE+7+Maven+Coordinates -->
 		<dependency>
-			<groupId>javax</groupId>
-			<artifactId>javaee-api</artifactId>
-			<version>8.0</version>
+			<groupId>jakarta.platform</groupId>
+			<artifactId>jakarta.jakartaee-api</artifactId>
+			<version>10.0.0</version>
 			<scope>provided</scope>
 		</dependency>
+
 		<dependency>
-			<groupId>org.owasp</groupId>
-			<artifactId>dependency-check-maven</artifactId>
-			<version>6.0.3</version>
-			<type>maven-plugin</type>
+			<groupId>org.jsoup</groupId>
+			<artifactId>jsoup</artifactId>
+			<version>1.15.3</version>
 		</dependency>
 	</dependencies>
 
@@ -156,17 +145,6 @@
 				<groupId>com.vaadin</groupId>
 				<artifactId>vaadin-maven-plugin</artifactId>
 				<version>${vaadin.plugin.version}</version>
-				<executions>
-					<execution>
-						<goals>
-							<goal>update-theme</goal>
-							<goal>update-widgetset</goal>
-							<goal>compile</goal>
-							<!-- Comment out compile-theme goal to use on-the-fly theme compilation -->
-							<goal>compile-theme</goal>
-						</goals>
-					</execution>
-				</executions>
 			</plugin>
 			<plugin>
 				<groupId>org.owasp</groupId>
@@ -179,9 +157,13 @@
 			<plugin>
 				<groupId>org.wildfly.plugins</groupId>
 				<artifactId>wildfly-maven-plugin</artifactId>
-				<version>2.0.0.Final</version>
+				<version>5.1.2.Final</version>
 				<configuration>
-					<version>15.0.0.Final</version>
+					<feature-packs>
+						<feature-pack>
+							<location>org.wildfly:wildfly-ee-galleon-pack:35.0.1.Final</location>
+						</feature-pack>
+					</feature-packs>
 				</configuration>
 			</plugin>
 			<!--This plugin's configuration is used to store Eclipse m2e settings 
