@@ -1,3 +1,10 @@
-target**/**
-.vscode**/**
+# Build output (matches target/ in any module, at any depth)
+target/
+
+# IDE / editor
+.idea/
+.vscode/
 settings.json
+
+# OS
+.DS_Store
